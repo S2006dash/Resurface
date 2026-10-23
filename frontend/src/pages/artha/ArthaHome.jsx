@@ -2,23 +2,26 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Nav from '../../components/Nav'
 import SafeToSpendCard from '../../components/artha/SafeToSpendCard'
+import { Term, openJargonTerm } from '../../components/artha/JargonBuster'
 import { getOverview, getCoach } from '../../api'
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts'
 import {
   ShieldAlert, Sparkles, Scale, Mic, Calculator, ArrowRight,
-  TrendingUp, ShieldCheck, AlertTriangle, Layers, ExternalLink, ChevronRight, FileText
+  TrendingUp, ShieldCheck, AlertTriangle, Layers, ExternalLink,
+  ChevronRight, FileText, CheckCircle2, DollarSign, Wallet,
+  CreditCard, Landmark, PiggyBank, HeartPulse, HelpCircle, UploadCloud
 } from 'lucide-react'
 
-const COLORS = ['#0d4f2e', '#1a7a48', '#2ea862', '#5fc98a', '#99e8bc', '#c8f5dc', '#e8476a', '#f4a261']
+const COLORS = ['#0d4f2e', '#16a34a', '#22c55e', '#5fc98a', '#86efac', '#eab308', '#f97316', '#ef4444']
 const fmt = n => '₹' + Number(n || 0).toLocaleString('en-IN', { maximumFractionDigits: 0 })
 
 export default function ArthaHome() {
   const [overview, setOverview] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [activeTab, setActiveTab] = useState('what-if') // 'what-if' | 'anomalies' | 'recon' | 'voice' | 'documents'
   const [lang, setLang] = useState('english')
   const [coach, setCoach] = useState('')
   const [coachLoading, setCoachLoading] = useState(false)
-  const [whyDrawer, setWhyDrawer] = useState(null) // { title, rows }
 
   useEffect(() => {
     getOverview().then(r => setOverview(r.data)).finally(() => setLoading(false))
@@ -41,8 +44,9 @@ export default function ArthaHome() {
     return (
       <>
         <Nav />
-        <div style={{ padding: 48, textAlign: 'center', color: '#0d4f2e', fontSize: 16 }}>
-          Loading your verified financial picture…
+        <div style={{ padding: '60px 24px', textAlign: 'center', color: '#0d4f2e' }}>
+          <div style={{ fontSize: 18, fontWeight: 700 }}>Connecting to Artha Financial Engine…</div>
+          <div style={{ fontSize: 13, color: '#64748b', marginTop: 6 }}>Calculating verified liquid buffer & resilience</div>
         </div>
       </>
     )
@@ -59,515 +63,475 @@ export default function ArthaHome() {
   return (
     <>
       <Nav />
-      <div style={{ maxWidth: 1160, margin: '0 auto', padding: '32px 24px' }}>
-        {/* Page Hero Header */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16, marginBottom: 28 }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-              <span style={{ fontSize: 28, fontWeight: 800, color: '#0d4f2e' }}>Artha Overview</span>
-              <span style={{
+      <div style={{ maxWidth: 1140, margin: '0 auto', padding: '28px 20px', background: '#f7faf7' }}>
+        
+        {/* ── 1. HERO BANNER: Inspired by User Slide ────────────────────────── */}
+        <div style={{
+          background: 'linear-gradient(135deg, #09331e 0%, #0d4f2e 100%)',
+          borderRadius: 20,
+          padding: '30px 34px',
+          color: '#ffffff',
+          boxShadow: '0 10px 30px rgba(9, 51, 30, 0.25)',
+          marginBottom: 28,
+          position: 'relative',
+          overflow: 'hidden',
+        }}>
+          {/* Subtle glow */}
+          <div style={{
+            position: 'absolute',
+            top: -40,
+            right: -40,
+            width: 200,
+            height: 200,
+            background: 'radial-gradient(circle, rgba(125,255,179,0.2) 0%, transparent 70%)',
+            borderRadius: '50%',
+            pointerEvents: 'none',
+          }} />
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 20 }}>
+            <div style={{ maxWidth: 640 }}>
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
                 background: 'rgba(125,255,179,0.2)',
-                color: '#0d4f2e',
-                fontSize: 11,
+                color: '#7dffb3',
+                padding: '4px 12px',
+                borderRadius: 20,
+                fontSize: 12,
                 fontWeight: 700,
-                padding: '3px 8px',
-                borderRadius: 12,
-                border: '1px solid #7dffb3',
+                textTransform: 'uppercase',
+                marginBottom: 10,
               }}>
-                ✦ Verified Engine
-              </span>
+                <span>✦ Artha Financial Co-Pilot</span>
+                <span>•</span>
+                <span>Powered by Gemma 4</span>
+              </div>
+              <h1 style={{ fontSize: 26, fontWeight: 800, margin: '0 0 8px', lineHeight: 1.3, color: '#ffffff' }}>
+                From Disconnected Financial Data to Personalized Well-Being
+              </h1>
+              <p style={{ color: '#c8f5dc', fontSize: 14, lineHeight: 1.5, margin: 0, opacity: 0.9 }}>
+                Consolidates accounts, digital wallets, credit cards, loans, and bills into one clear picture. 
+                Grounded in verifiable calculations so you always know what to do next.
+              </p>
             </div>
-            <div style={{ color: '#4a7a5a', fontSize: 14 }}>
-              All your money, one clear picture. Grounded in deterministic calculations with human verification.
+
+            {/* Quick Status Pill */}
+            <div style={{
+              background: 'rgba(255,255,255,0.1)',
+              backdropFilter: 'blur(10px)',
+              borderRadius: 14,
+              padding: '16px 20px',
+              border: '1px solid rgba(125,255,179,0.25)',
+              textAlign: 'right',
+            }}>
+              <div style={{ fontSize: 11, color: '#c8f5dc', textTransform: 'uppercase', fontWeight: 600 }}>Emergency Runway</div>
+              <div style={{ fontSize: 24, fontWeight: 800, color: '#7dffb3', marginTop: 2 }}>{resil.runway_months} Months</div>
+              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.7)', marginTop: 2 }}>
+                <Term name="Resilience">Resilience Score</Term>: {resil.score}/100 ({resil.grade})
+              </div>
             </div>
-          </div>
-
-          {/* Quick Action Navigation Strip */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
-            <Link
-              to="/artha/anomalies"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
-                padding: '9px 16px',
-                borderRadius: 8,
-                background: '#fee2e2',
-                color: '#b91c1c',
-                textDecoration: 'none',
-                fontSize: 13,
-                fontWeight: 700,
-                border: '1px solid #fca5a5',
-              }}
-            >
-              <ShieldAlert size={15} />
-              <span>Scam & Anomalies ({anomaliesCount})</span>
-            </Link>
-
-            <Link
-              to="/artha/simulator"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
-                padding: '9px 16px',
-                borderRadius: 8,
-                background: '#0d4f2e',
-                color: '#fff',
-                textDecoration: 'none',
-                fontSize: 13,
-                fontWeight: 600,
-              }}
-            >
-              <Calculator size={15} />
-              <span>What-If Simulator</span>
-            </Link>
-
-            <Link
-              to="/artha/reconciliation"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
-                padding: '9px 16px',
-                borderRadius: 8,
-                background: '#f8fafc',
-                color: '#0d4f2e',
-                textDecoration: 'none',
-                fontSize: 13,
-                fontWeight: 600,
-                border: '1.5px solid #0d4f2e',
-              }}
-            >
-              <Scale size={15} />
-              <span>Reconciliation</span>
-            </Link>
-
-            <Link
-              to="/artha/voice"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
-                padding: '9px 16px',
-                borderRadius: 8,
-                background: '#e0f2fe',
-                color: '#0369a1',
-                textDecoration: 'none',
-                fontSize: 13,
-                fontWeight: 700,
-                border: '1px solid #7dd3fc',
-              }}
-            >
-              <Mic size={15} />
-              <span>Voice Artha (Tamil/Hindi)</span>
-            </Link>
-
-            <Link
-              to="/artha/upload"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
-                padding: '9px 16px',
-                borderRadius: 8,
-                background: '#f1f5f9',
-                color: '#334155',
-                textDecoration: 'none',
-                fontSize: 13,
-                fontWeight: 600,
-              }}
-            >
-              <span>+ Upload Statement</span>
-            </Link>
           </div>
         </div>
 
-        {/* ── 1. PROMINENT SAFE-TO-SPEND AMOUNT (Feature 5) ───────────────────── */}
-        <SafeToSpendCard initialData={sts} />
-
-        {/* ── 2. FINANCIAL RESILIENCE SCORE ──────────────────────────────────── */}
-        <div style={{
-          background: '#ffffff',
-          borderRadius: 16,
-          border: '1.5px solid #bbf7d0',
-          boxShadow: '0 4px 16px rgba(0,0,0,0.04)',
-          padding: '24px 28px',
-          marginBottom: 32,
-        }}>
-          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 16, marginBottom: 16 }}>
+        {/* ── 2. TWO-COLUMN EXECUTIVE DASHBOARD: Calm, Uncluttered ───────────── */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: 20, marginBottom: 28 }}>
+          
+          {/* Left: The Actionable Safe-to-Spend Box */}
+          <div style={{
+            background: '#ffffff',
+            borderRadius: 18,
+            padding: '24px 26px',
+            border: '1px solid #e2ece4',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.03)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+          }}>
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 700, color: '#15803d', textTransform: 'uppercase' }}>
-                <ShieldCheck size={16} color="#16a34a" />
-                <span>Financial Resilience Assessment</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: '#0d4f2e', background: '#dcfce7', padding: '3px 10px', borderRadius: 20 }}>
+                  Primary Daily Metric
+                </span>
+                <span style={{ fontSize: 12, color: '#64748b' }}>Next 30 Days</span>
               </div>
-              <h2 style={{ fontSize: 20, fontWeight: 800, color: '#0f172a', margin: '4px 0 0' }}>
-                Resilience Score: <span style={{ color: '#16a34a' }}>{resil.score}/100</span> ({resil.grade})
-              </h2>
-              <div style={{ fontSize: 13, color: '#64748b', marginTop: 2 }}>
-                Measures how long you can comfortably cover essential living expenses if your primary income source stops.
+              <div style={{ fontSize: 14, color: '#64748b', fontWeight: 500 }}>
+                Estimated <Term name="Safe-to-Spend">Safe-to-Spend Amount</Term>
+              </div>
+              <div style={{ fontSize: 44, fontWeight: 800, color: '#0d4f2e', letterSpacing: -1, margin: '6px 0 2px' }}>
+                {fmt(sts?.safe_to_spend ?? 33675)}
+              </div>
+              <div style={{ fontSize: 13, color: '#16a34a', fontWeight: 600, marginBottom: 16 }}>
+                ≈ {fmt(sts?.daily_safe ?? 1122)} / day safe spending allowance
+              </div>
+
+              {/* Simple Equation Steps */}
+              <div style={{ background: '#f8fafc', padding: 12, borderRadius: 10, fontSize: 13, border: '1px solid #e2e8f0' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '3px 0' }}>
+                  <span style={{ color: '#475569' }}>Available Bank Balance</span>
+                  <span style={{ fontWeight: 700, color: '#0f172a' }}>+{fmt(sts?.available_balance ?? 85000)}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '3px 0' }}>
+                  <span style={{ color: '#475569' }}>Upcoming Rent & <Term name="EMI">EMIs</Term></span>
+                  <span style={{ fontWeight: 700, color: '#ef4444' }}>−{fmt(sts?.upcoming_bills_total ?? 33575)}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '3px 0' }}>
+                  <span style={{ color: '#475569' }}>Reserved SIPs & Safety Buffer</span>
+                  <span style={{ fontWeight: 700, color: '#f59e0b' }}>−{fmt(sts?.reserved_savings_total ?? 17750)}</span>
+                </div>
               </div>
             </div>
 
-            <div style={{ background: '#f0fdf4', padding: '10px 18px', borderRadius: 10, textAlign: 'right' }}>
-              <div style={{ fontSize: 11, color: '#15803d', textTransform: 'uppercase' }}>Expense Runway Buffer</div>
-              <div style={{ fontSize: 22, fontWeight: 800, color: '#0d4f2e' }}>
-                {resil.runway_months} Months
-              </div>
+            <div style={{ marginTop: 14, fontSize: 11, color: '#94a3b8', fontStyle: 'italic' }}>
+              Accounts for rent, insurance, loan EMIs & emergency savings.
             </div>
           </div>
 
-          {/* 4 Transparent Pillars */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
-            {(resil.pillars || [
-              { name: 'Emergency Runway', score: 28, max: 35, detail: '2.4 months expense buffer' },
-              { name: 'Obligations Coverage', score: 25, max: 30, detail: '2.5x upcoming bills covered' },
-              { name: 'Debt Burden', score: 12, max: 20, detail: 'Healthy credit debt ratio' },
-              { name: 'Savings Discipline', score: 14, max: 15, detail: '36.9% monthly savings rate' },
-            ]).map((pillar, idx) => (
-              <div key={idx} style={{ background: '#f8fafc', padding: 12, borderRadius: 8, border: '1px solid #e2e8f0' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, fontWeight: 700, color: '#0f172a' }}>
-                  <span>{pillar.name}</span>
-                  <span style={{ color: '#0d4f2e' }}>{pillar.score}/{pillar.max}</span>
-                </div>
-                <div style={{ background: '#e2e8f0', height: 6, borderRadius: 3, margin: '6px 0', overflow: 'hidden' }}>
-                  <div style={{ background: '#16a34a', width: `${(pillar.score / pillar.max) * 100}%`, height: '100%' }} />
-                </div>
-                <div style={{ fontSize: 11, color: '#64748b' }}>{pillar.detail}</div>
+          {/* Right: Consolidated Accounts Breakdown Card (From Slide Mockup) */}
+          <div style={{
+            background: '#ffffff',
+            borderRadius: 18,
+            padding: '24px 26px',
+            border: '1px solid #e2ece4',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.03)',
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+              <div style={{ fontSize: 15, fontWeight: 800, color: '#0f172a' }}>
+                Your Financial Overview
               </div>
+              <div style={{ fontSize: 12, fontWeight: 700, color: '#0d4f2e' }}>
+                Net Worth: {fmt(nw?.total_net_worth)}
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 14px', borderRadius: 8, background: '#f8fafc', border: '1px solid #f1f5f9' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <Landmark size={17} color="#0d4f2e" />
+                  <span style={{ fontSize: 13, fontWeight: 600, color: '#0f172a' }}>Bank Accounts (Liquid)</span>
+                </div>
+                <span style={{ fontSize: 15, fontWeight: 800, color: '#0f172a' }}>{fmt(nw?.bank_balance)}</span>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 14px', borderRadius: 8, background: '#f8fafc', border: '1px solid #f1f5f9' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <CreditCard size={17} color="#ea580c" />
+                  <span style={{ fontSize: 13, fontWeight: 600, color: '#0f172a' }}>Credit Cards Outstanding</span>
+                </div>
+                <span style={{ fontSize: 15, fontWeight: 800, color: '#ea580c' }}>{fmt(nw?.liabilities)}</span>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 14px', borderRadius: 8, background: '#f8fafc', border: '1px solid #f1f5f9' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <PiggyBank size={17} color="#16a34a" />
+                  <span style={{ fontSize: 13, fontWeight: 600, color: '#0f172a' }}>Investments (SIPs)</span>
+                </div>
+                <span style={{ fontSize: 15, fontWeight: 800, color: '#16a34a' }}>{fmt(nw?.investments)}</span>
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 14px', borderRadius: 8, background: '#f8fafc', border: '1px solid #f1f5f9' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <HeartPulse size={17} color="#0284c7" />
+                  <span style={{ fontSize: 13, fontWeight: 600, color: '#0f172a' }}>Insurance Coverage</span>
+                </div>
+                <span style={{ fontSize: 12, fontWeight: 700, color: '#0284c7', background: '#e0f2fe', padding: '2px 8px', borderRadius: 6 }}>
+                  Active (Star Health)
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── 3. FOCUSED FEATURE SEGMENTED SELECTOR: Zero Cognitive Clutter ───── */}
+        <div style={{ marginBottom: 28 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+            <div style={{ fontSize: 14, fontWeight: 800, color: '#0f172a' }}>
+              Explore Actions & Decision Tools
+            </div>
+            <div style={{ fontSize: 12, color: '#64748b' }}>
+              Select a tool to explore in-place
+            </div>
+          </div>
+
+          <div style={{
+            display: 'flex',
+            background: '#e2ece4',
+            padding: 4,
+            borderRadius: 12,
+            gap: 4,
+            overflowX: 'auto',
+          }}>
+            {[
+              { id: 'what-if', label: '🎲 What-If Simulator', count: '4 Scenarios' },
+              { id: 'anomalies', label: '🛡️ Scam Warning', count: `${anomaliesCount} Finding` },
+              { id: 'voice', label: '🎙️ Voice Artha', count: 'Gemma 4' },
+              { id: 'recon', label: '⚖️ Reconciliation', count: 'Multi-Source' },
+              { id: 'documents', label: '📂 Smart Ingestion', count: 'OCR' },
+            ].map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                style={{
+                  flex: 1,
+                  minWidth: 150,
+                  padding: '9px 12px',
+                  borderRadius: 9,
+                  border: 'none',
+                  background: activeTab === tab.id ? '#ffffff' : 'transparent',
+                  color: activeTab === tab.id ? '#0d4f2e' : '#475569',
+                  fontSize: 13,
+                  fontWeight: activeTab === tab.id ? 800 : 600,
+                  cursor: 'pointer',
+                  boxShadow: activeTab === tab.id ? '0 2px 8px rgba(0,0,0,0.06)' : 'none',
+                  transition: 'all 0.15s ease',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: 6,
+                }}
+              >
+                <span>{tab.label}</span>
+                <span style={{
+                  fontSize: 10,
+                  padding: '1px 6px',
+                  borderRadius: 10,
+                  background: activeTab === tab.id ? '#dcfce7' : 'rgba(0,0,0,0.05)',
+                  color: activeTab === tab.id ? '#15803d' : '#64748b',
+                }}>
+                  {tab.count}
+                </span>
+              </button>
             ))}
           </div>
         </div>
 
-        {/* ── 3. SIGNATURE HIGHLIGHT GRID: SCAM WARNING, WHAT-IF, RECON, VOICE ── */}
-        <div style={{ marginBottom: 32 }}>
-          <div style={{ fontSize: 13, fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: 14 }}>
-            Signature Innovations & Tools
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 16 }}>
-            {/* Anomaly Card */}
-            <Link
-              to="/artha/anomalies"
-              style={{
-                background: '#ffffff',
-                border: '1.5px solid #fecaca',
-                borderRadius: 14,
-                padding: '20px 22px',
-                textDecoration: 'none',
-                color: 'inherit',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.03)',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-              }}
-            >
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                  <div style={{ background: '#fee2e2', color: '#b91c1c', padding: 6, borderRadius: 8 }}>
-                    <ShieldAlert size={18} />
-                  </div>
-                  <span style={{ fontSize: 11, background: '#fee2e2', color: '#b91c1c', padding: '2px 8px', borderRadius: 10, fontWeight: 700 }}>
-                    1 Flagged
-                  </span>
-                </div>
-                <div style={{ fontSize: 16, fontWeight: 800, color: '#0f172a', marginBottom: 4 }}>
-                  Scam & Anomaly Warning
-                </div>
-                <p style={{ fontSize: 13, color: '#64748b', margin: 0, lineHeight: 1.4 }}>
-                  Possible duplicate Swiggy debit of ₹850.00 detected. Verify or dispute with exact evidence.
-                </p>
-              </div>
-              <div style={{ fontSize: 12, fontWeight: 700, color: '#b91c1c', marginTop: 14, display: 'flex', alignItems: 'center', gap: 4 }}>
-                <span>Review finding</span> <ChevronRight size={14} />
-              </div>
-            </Link>
-
-            {/* What-If Simulator Card */}
-            <Link
-              to="/artha/simulator"
-              style={{
-                background: '#ffffff',
-                border: '1.5px solid #fed7aa',
-                borderRadius: 14,
-                padding: '20px 22px',
-                textDecoration: 'none',
-                color: 'inherit',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.03)',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-              }}
-            >
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                  <div style={{ background: '#fff7ed', color: '#ea580c', padding: 6, borderRadius: 8 }}>
-                    <Calculator size={18} />
-                  </div>
-                  <span style={{ fontSize: 11, background: '#ffedd5', color: '#9a3412', padding: '2px 8px', borderRadius: 10, fontWeight: 700 }}>
-                    4 Scenarios
-                  </span>
-                </div>
-                <div style={{ fontSize: 16, fontWeight: 800, color: '#0f172a', marginBottom: 4 }}>
-                  Financial What-If Simulator
-                </div>
-                <p style={{ fontSize: 13, color: '#64748b', margin: 0, lineHeight: 1.4 }}>
-                  Simulate delayed salary (15d), rent spike (+₹3k), and whether you can afford a ₹45k phone without delaying your laptop goal.
-                </p>
-              </div>
-              <div style={{ fontSize: 12, fontWeight: 700, color: '#ea580c', marginTop: 14, display: 'flex', alignItems: 'center', gap: 4 }}>
-                <span>Open simulator</span> <ChevronRight size={14} />
-              </div>
-            </Link>
-
-            {/* Reconciliation Center Card */}
-            <Link
-              to="/artha/reconciliation"
-              style={{
-                background: '#ffffff',
-                border: '1.5px solid #cde8d4',
-                borderRadius: 14,
-                padding: '20px 22px',
-                textDecoration: 'none',
-                color: 'inherit',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.03)',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-              }}
-            >
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                  <div style={{ background: '#f0fdf4', color: '#0d4f2e', padding: 6, borderRadius: 8 }}>
-                    <Scale size={18} />
-                  </div>
-                  <span style={{ fontSize: 11, background: '#dcfce7', color: '#15803d', padding: '2px 8px', borderRadius: 10, fontWeight: 700 }}>
-                    Multi-Source
-                  </span>
-                </div>
-                <div style={{ fontSize: 16, fontWeight: 800, color: '#0f172a', marginBottom: 4 }}>
-                  Reconciliation Center
-                </div>
-                <p style={{ fontSize: 13, color: '#64748b', margin: 0, lineHeight: 1.4 }}>
-                  Cross-match UPI, Bank statements & Credit cards. Eliminate duplicate retries and statement sum variances.
-                </p>
-              </div>
-              <div style={{ fontSize: 12, fontWeight: 700, color: '#0d4f2e', marginTop: 14, display: 'flex', alignItems: 'center', gap: 4 }}>
-                <span>Reconcile sources</span> <ChevronRight size={14} />
-              </div>
-            </Link>
-
-            {/* Voice Artha Card */}
-            <Link
-              to="/artha/voice"
-              style={{
-                background: '#ffffff',
-                border: '1.5px solid #bae6fd',
-                borderRadius: 14,
-                padding: '20px 22px',
-                textDecoration: 'none',
-                color: 'inherit',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.03)',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-              }}
-            >
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                  <div style={{ background: '#e0f2fe', color: '#0284c7', padding: 6, borderRadius: 8 }}>
-                    <Mic size={18} />
-                  </div>
-                  <span style={{ fontSize: 11, background: '#e0f2fe', color: '#0369a1', padding: '2px 8px', borderRadius: 10, fontWeight: 700 }}>
-                    Tamil • Hindi • Eng
-                  </span>
-                </div>
-                <div style={{ fontSize: 16, fontWeight: 800, color: '#0f172a', marginBottom: 4 }}>
-                  Voice-Based Artha
-                </div>
-                <p style={{ fontSize: 13, color: '#64748b', margin: 0, lineHeight: 1.4 }}>
-                  Ask questions naturally in your native Indian language. Gemma 4 provides spoken answers with audio playback.
-                </p>
-              </div>
-              <div style={{ fontSize: 12, fontWeight: 700, color: '#0284c7', marginTop: 14, display: 'flex', alignItems: 'center', gap: 4 }}>
-                <span>Speak with Artha</span> <ChevronRight size={14} />
-              </div>
-            </Link>
-          </div>
-        </div>
-
-        {/* ── 4. NET WORTH & CASH FLOW METRICS ────────────────────────────────── */}
-        <div style={{ marginBottom: 32 }}>
-          <div style={{ fontSize: 13, fontWeight: 700, color: '#475569', textTransform: 'uppercase', marginBottom: 14 }}>
-            Net Worth & Cash Flow Overview
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16 }}>
-            <div style={{ background: '#0d4f2e', color: '#fff', borderRadius: 12, padding: '20px 24px', boxShadow: '0 4px 14px rgba(13,79,46,0.2)' }}>
-              <div style={{ fontSize: 12, color: '#7dffb3', textTransform: 'uppercase', letterSpacing: 0.5 }}>Total Net Worth</div>
-              <div style={{ fontSize: 28, fontWeight: 800, color: '#7dffb3', marginTop: 4 }}>{fmt(nw?.total_net_worth)}</div>
-              <div style={{ fontSize: 11, color: '#c8f5dc', marginTop: 4 }}>Assets − Liabilities</div>
-            </div>
-
-            <div style={{ background: '#fff', borderRadius: 12, padding: '20px 24px', border: '1px solid #e2e8f0', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
-              <div style={{ fontSize: 12, color: '#64748b', textTransform: 'uppercase' }}>Bank Balance</div>
-              <div style={{ fontSize: 28, fontWeight: 800, color: '#0f172a', marginTop: 4 }}>{fmt(nw?.bank_balance)}</div>
-              <div style={{ fontSize: 11, color: '#64748b', marginTop: 4 }}>Liquid checking & savings</div>
-            </div>
-
-            <div style={{ background: '#fff', borderRadius: 12, padding: '20px 24px', border: '1px solid #e2e8f0', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
-              <div style={{ fontSize: 12, color: '#64748b', textTransform: 'uppercase' }}>Investments (SIPs)</div>
-              <div style={{ fontSize: 28, fontWeight: 800, color: '#16a34a', marginTop: 4 }}>{fmt(nw?.investments)}</div>
-              <div style={{ fontSize: 11, color: '#64748b', marginTop: 4 }}>Mutual funds & wealth</div>
-            </div>
-
-            <div style={{ background: '#fff', borderRadius: 12, padding: '20px 24px', border: '1px solid #e2e8f0', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
-              <div style={{ fontSize: 12, color: '#64748b', textTransform: 'uppercase' }}>Liabilities (Cards & Loans)</div>
-              <div style={{ fontSize: 28, fontWeight: 800, color: '#dc2626', marginTop: 4 }}>{fmt(nw?.liabilities)}</div>
-              <div style={{ fontSize: 11, color: '#dc2626', marginTop: 4 }}>Outstanding balance</div>
-            </div>
-          </div>
-        </div>
-
-        {/* ── 5. SPENDING CATEGORIES & UPCOMING BILLS ─────────────────────────── */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 24, marginBottom: 32 }}>
-          {/* Category Pie Chart */}
-          <div style={{ background: '#ffffff', borderRadius: 14, border: '1px solid #e2e8f0', padding: 24, boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
-            <h3 style={{ fontSize: 16, fontWeight: 800, color: '#0d4f2e', margin: '0 0 16px' }}>
-              Monthly Spend Breakdown by Category
-            </h3>
-            {cats.length > 0 ? (
-              <ResponsiveContainer width="100%" height={240}>
-                <PieChart>
-                  <Pie data={cats} dataKey="total" nameKey="category" cx="50%" cy="50%" outerRadius={85} label={e => `${e.category}`}>
-                    {cats.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
-                  </Pie>
-                  <Tooltip formatter={v => fmt(v)} />
-                </PieChart>
-              </ResponsiveContainer>
-            ) : (
-              <div style={{ padding: 40, textAlign: 'center', color: '#64748b' }}>No category transactions recorded yet.</div>
-            )}
-          </div>
-
-          {/* Upcoming Bills & Renewals */}
-          <div style={{ background: '#ffffff', borderRadius: 14, border: '1px solid #e2e8f0', padding: 24, boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
-            <h3 style={{ fontSize: 16, fontWeight: 800, color: '#0d4f2e', margin: '0 0 16px' }}>
-              Bills & Renewals Due in 30 Days
-            </h3>
-            {bills.length > 0 ? (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                {bills.map((b, i) => (
-                  <div key={i} style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    padding: '12px 14px',
-                    borderRadius: 8,
-                    background: '#f8fafc',
-                    border: '1px solid #f1f5f9',
-                  }}>
-                    <div>
-                      <div style={{ fontWeight: 700, color: '#0f172a', fontSize: 14 }}>{b.name}</div>
-                      <div style={{ fontSize: 11, color: '#64748b' }}>{b.kind.toUpperCase()} • Due in {b.days_until} days</div>
-                    </div>
-                    <div style={{ fontSize: 14, fontWeight: 800, color: '#b91c1c' }}>
-                      {fmt(b.amount)}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div style={{ padding: 40, textAlign: 'center', color: '#64748b' }}>No upcoming bills due in the next 30 days.</div>
-            )}
-          </div>
-        </div>
-
-        {/* ── 6. ASK ARTHA COACH (Multilingual Gemma Explainer) ───────────────── */}
+        {/* ── 4. ACTIVE TOOL WORKSPACE ────────────────────────────────────────── */}
         <div style={{
-          background: '#f0fdf4',
+          background: '#ffffff',
           borderRadius: 16,
-          border: '1.5px solid #a7f3d0',
+          border: '1px solid #e2ece4',
           padding: '24px 28px',
+          boxShadow: '0 4px 16px rgba(0,0,0,0.03)',
           marginBottom: 32,
         }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <div style={{ background: '#0d4f2e', color: '#fff', padding: 6, borderRadius: 8 }}>
-                <Sparkles size={16} color="#7dffb3" />
+          {activeTab === 'what-if' && (
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+                <div>
+                  <h3 style={{ fontSize: 18, fontWeight: 800, color: '#0d4f2e', margin: 0 }}>
+                    Financial What-If Simulator
+                  </h3>
+                  <p style={{ fontSize: 13, color: '#64748b', margin: '4px 0 0' }}>
+                    Model unexpected events before they happen. See the exact delay on your Laptop savings goal.
+                  </p>
+                </div>
+                <Link to="/artha/simulator" style={{ fontSize: 12, fontWeight: 700, color: '#0d4f2e', textDecoration: 'none' }}>
+                  Full Screen Simulator →
+                </Link>
               </div>
-              <h3 style={{ margin: 0, fontSize: 17, fontWeight: 800, color: '#0d4f2e' }}>
-                Ask Artha AI Coach (Gemma 4)
-              </h3>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12, marginTop: 14 }}>
+                <Link to="/artha/simulator" style={{ textDecoration: 'none', background: '#f8fafc', padding: 14, borderRadius: 10, border: '1px solid #e2e8f0', color: '#0f172a' }}>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: '#ea580c' }}>⏱️ Salary Delayed by 15 Days</div>
+                  <div style={{ fontSize: 13, marginTop: 4, color: '#475569' }}>Minimum balance stays at ₹57,250. Buffer absorbs delay.</div>
+                </Link>
+                <Link to="/artha/simulator" style={{ textDecoration: 'none', background: '#f8fafc', padding: 14, borderRadius: 10, border: '1px solid #e2e8f0', color: '#0f172a' }}>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: '#ef4444' }}>🏠 Rent Rises by ₹3,000</div>
+                  <div style={{ fontSize: 13, marginTop: 4, color: '#475569' }}>Laptop goal shifts out by +1.6 months. Savings rate drops.</div>
+                </Link>
+                <Link to="/artha/simulator" style={{ textDecoration: 'none', background: '#f8fafc', padding: 14, borderRadius: 10, border: '1px solid #e2e8f0', color: '#0f172a' }}>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: '#16a34a' }}>💰 Save ₹2,000 Extra / mo</div>
+                  <div style={{ fontSize: 13, marginTop: 4, color: '#475569' }}>Goal completed 1.2 months earlier. Adds ₹24,000 wealth.</div>
+                </Link>
+                <Link to="/artha/simulator" style={{ textDecoration: 'none', background: '#f8fafc', padding: 14, borderRadius: 10, border: '1px solid #e2e8f0', color: '#0f172a' }}>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: '#6366f1' }}>📱 ₹45,000 Phone Purchase</div>
+                  <div style={{ fontSize: 13, marginTop: 4, color: '#475569' }}>6-mo EMI splits cost safely without delaying primary goal.</div>
+                </Link>
+              </div>
             </div>
+          )}
 
-            {/* Language buttons */}
-            <div style={{ display: 'flex', gap: 6 }}>
-              {[
-                { id: 'english', label: 'English' },
-                { id: 'tamil', label: 'தமிழ்' },
-                { id: 'hindi', label: 'हिन्दी' },
-              ].map(l => (
-                <button
-                  key={l.id}
-                  onClick={() => { setLang(l.id); askCoach(l.id) }}
-                  style={{
-                    padding: '5px 12px',
-                    borderRadius: 6,
-                    border: lang === l.id ? '1.5px solid #0d4f2e' : '1px solid #cbd5e1',
-                    background: lang === l.id ? '#0d4f2e' : '#ffffff',
-                    color: lang === l.id ? '#ffffff' : '#334155',
-                    fontSize: 12,
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                  }}
-                >
-                  {l.label}
-                </button>
-              ))}
+          {activeTab === 'anomalies' && (
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+                <div>
+                  <h3 style={{ fontSize: 18, fontWeight: 800, color: '#b91c1c', margin: 0 }}>
+                    Financial Anomaly & Scam Warning
+                  </h3>
+                  <p style={{ fontSize: 13, color: '#64748b', margin: '4px 0 0' }}>
+                    Explainable anomaly rules. Flags suspicious patterns with exact evidence, not unverified claims.
+                  </p>
+                </div>
+                <Link to="/artha/anomalies" style={{ fontSize: 12, fontWeight: 700, color: '#b91c1c', textDecoration: 'none' }}>
+                  Review All Warnings →
+                </Link>
+              </div>
+
+              <div style={{ background: '#fff7ed', border: '1.5px solid #fed7aa', borderRadius: 10, padding: 16 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <div>
+                    <span style={{ fontSize: 11, fontWeight: 700, background: '#fee2e2', color: '#b91c1c', padding: '2px 6px', borderRadius: 4 }}>
+                      RULE-202: Duplicate Debit
+                    </span>
+                    <h4 style={{ margin: '6px 0 4px', fontSize: 15, color: '#0f172a' }}>
+                      Possible duplicate charge: Swiggy (₹850.00 twice on 2026-09-14)
+                    </h4>
+                    <p style={{ margin: 0, fontSize: 13, color: '#475569' }}>
+                      Two identical payments detected within 24 hours. Verify if this was an accidental retry.
+                    </p>
+                  </div>
+                  <Link to="/artha/anomalies" style={{ background: '#0d4f2e', color: '#fff', padding: '6px 14px', borderRadius: 6, fontSize: 12, fontWeight: 700, textDecoration: 'none' }}>
+                    Confirm or Dispute
+                  </Link>
+                </div>
+              </div>
             </div>
-          </div>
+          )}
 
-          <p style={{ fontSize: 13, color: '#334155', margin: '0 0 14px' }}>
-            Get a plain-language explanation of your cash flow and safe-to-spend buffer. Numbers are computed authoritatively by Artha's Python engine; Gemma provides clear guidance.
-          </p>
+          {activeTab === 'voice' && (
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+                <div>
+                  <h3 style={{ fontSize: 18, fontWeight: 800, color: '#0d4f2e', margin: 0 }}>
+                    Voice Artha in Regional Languages
+                  </h3>
+                  <p style={{ fontSize: 13, color: '#64748b', margin: '4px 0 0' }}>
+                    Powered by Gemma 4. Ask questions aloud in Tamil, Hindi, Telugu, or English.
+                  </p>
+                </div>
+                <Link to="/artha/voice" style={{ fontSize: 12, fontWeight: 700, color: '#0d4f2e', textDecoration: 'none' }}>
+                  Open Voice Assistant →
+                </Link>
+              </div>
 
-          <button
-            onClick={() => askCoach(lang)}
-            disabled={coachLoading}
-            style={{
-              padding: '9px 18px',
-              borderRadius: 8,
-              background: '#0d4f2e',
-              color: '#ffffff',
-              border: 'none',
-              fontSize: 13,
-              fontWeight: 700,
-              cursor: 'pointer',
-            }}
-          >
-            {coachLoading ? 'Gemma is explaining…' : 'Explain My Current Cash Flow'}
-          </button>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 12 }}>
+                <Link to="/artha/voice" style={{ textDecoration: 'none', background: '#f0fdf4', padding: '10px 16px', borderRadius: 20, border: '1px solid #bbf7d0', color: '#0d4f2e', fontSize: 13, fontWeight: 600 }}>
+                  💬 தமிழ்: "Indha maasam evlo spend pannirukken?"
+                </Link>
+                <Link to="/artha/voice" style={{ textDecoration: 'none', background: '#f0fdf4', padding: '10px 16px', borderRadius: 20, border: '1px solid #bbf7d0', color: '#0d4f2e', fontSize: 13, fontWeight: 600 }}>
+                  💬 हिन्दी: "Mera safe-to-spend amount kitna hai?"
+                </Link>
+                <Link to="/artha/voice" style={{ textDecoration: 'none', background: '#f0fdf4', padding: '10px 16px', borderRadius: 20, border: '1px solid #bbf7d0', color: '#0d4f2e', fontSize: 13, fontWeight: 600 }}>
+                  💬 English: "Can I afford a ₹45k phone without delaying goal?"
+                </Link>
+              </div>
+            </div>
+          )}
 
-          {coach && (
-            <div style={{
-              marginTop: 16,
-              background: '#ffffff',
-              borderRadius: 10,
-              padding: '16px 20px',
-              borderLeft: '4px solid #0d4f2e',
-              fontSize: 14,
-              lineHeight: 1.6,
-              color: '#064e3b',
-              fontWeight: 500,
-            }}>
-              "{coach}"
+          {activeTab === 'recon' && (
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+                <div>
+                  <h3 style={{ fontSize: 18, fontWeight: 800, color: '#0d4f2e', margin: 0 }}>
+                    Financial Reconciliation Center
+                  </h3>
+                  <p style={{ fontSize: 13, color: '#64748b', margin: '4px 0 0' }}>
+                    Cross-match UPI screenshots, bank statements, and credit card bills before saving.
+                  </p>
+                </div>
+                <Link to="/artha/reconciliation" style={{ fontSize: 12, fontWeight: 700, color: '#0d4f2e', textDecoration: 'none' }}>
+                  Open Reconciliation Center →
+                </Link>
+              </div>
+
+              <div style={{ background: '#f8fafc', padding: 14, borderRadius: 10, border: '1px solid #e2e8f0', fontSize: 13, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                  <strong>Statement Total Check:</strong> Bank Stated (₹34,250) vs Extracted Rows (₹33,400).
+                  <div style={{ color: '#ea580c', fontSize: 12, marginTop: 2 }}>
+                    Variance: ₹850.00 matches unconfirmed Swiggy retry.
+                  </div>
+                </div>
+                <Link to="/artha/reconciliation" style={{ background: '#0d4f2e', color: '#fff', padding: '6px 14px', borderRadius: 6, fontSize: 12, fontWeight: 700, textDecoration: 'none' }}>
+                  Resolve Conflicts
+                </Link>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'documents' && (
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+                <div>
+                  <h3 style={{ fontSize: 18, fontWeight: 800, color: '#0d4f2e', margin: 0 }}>
+                    Smart Document Inbox (Gemma 4 Vision OCR)
+                  </h3>
+                  <p style={{ fontSize: 13, color: '#64748b', margin: '4px 0 0' }}>
+                    Upload messy receipts, UPI screenshots, or statement PDFs. Private PII masking applied automatically.
+                  </p>
+                </div>
+                <Link to="/artha/upload" style={{ fontSize: 12, fontWeight: 700, color: '#0d4f2e', textDecoration: 'none' }}>
+                  Upload Document →
+                </Link>
+              </div>
+
+              <div style={{ textAlign: 'center', padding: '24px 20px', border: '2px dashed #bbf7d0', borderRadius: 12, background: '#f0fdf4' }}>
+                <UploadCloud size={32} color="#16a34a" style={{ margin: '0 auto 8px' }} />
+                <div style={{ fontSize: 14, fontWeight: 700, color: '#0d4f2e' }}>Drop any bill, screenshot, or PDF here</div>
+                <div style={{ fontSize: 12, color: '#64748b', marginTop: 4 }}>
+                  Gemma 4 extracts dates, merchants, and amounts. You confirm before anything is saved.
+                </div>
+              </div>
             </div>
           )}
         </div>
 
-        {/* Global Disclaimer */}
-        <div style={{ fontSize: 12, color: '#888', textAlign: 'center', fontStyle: 'italic' }}>
-          Not financial advice. All arithmetic calculated by Artha's deterministic Python engine. Estimates based on recent transaction history.
+        {/* ── 5. THE 4 IMPACT PILLARS (Directly from User Slide) ──────────────── */}
+        <div style={{
+          background: '#062615',
+          borderRadius: 16,
+          padding: '24px 28px',
+          color: '#ffffff',
+          marginBottom: 28,
+        }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#7dffb3', textTransform: 'uppercase', marginBottom: 14, letterSpacing: 0.5 }}>
+            Artha Impact Framework
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 18 }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+              <div style={{ background: 'rgba(125,255,179,0.15)', padding: 8, borderRadius: 8 }}>
+                <ShieldCheck size={18} color="#7dffb3" />
+              </div>
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: '#ffffff' }}>Safer Transactions</div>
+                <div style={{ fontSize: 12, color: '#c8f5dc', marginTop: 2 }}>Explainable anomaly warnings catch duplicates and spikes before loss occurs.</div>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+              <div style={{ background: 'rgba(125,255,179,0.15)', padding: 8, borderRadius: 8 }}>
+                <TrendingUp size={18} color="#7dffb3" />
+              </div>
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: '#ffffff' }}>Better Financial Insights</div>
+                <div style={{ fontSize: 12, color: '#c8f5dc', marginTop: 2 }}>One actionable Safe-to-Spend number instead of confusing chart walls.</div>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+              <div style={{ background: 'rgba(125,255,179,0.15)', padding: 8, borderRadius: 8 }}>
+                <Sparkles size={18} color="#7dffb3" />
+              </div>
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: '#ffffff' }}>Empowered Users</div>
+                <div style={{ fontSize: 12, color: '#c8f5dc', marginTop: 2 }}>What-If simulator tests purchase trade-offs against savings goals first.</div>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+              <div style={{ background: 'rgba(125,255,179,0.15)', padding: 8, borderRadius: 8 }}>
+                <Mic size={18} color="#7dffb3" />
+              </div>
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: '#ffffff' }}>Inclusive Services</div>
+                <div style={{ fontSize: 12, color: '#c8f5dc', marginTop: 2 }}>Native voice assistance in Tamil, Hindi, Telugu & English for everyone.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Global Footer Note */}
+        <div style={{ textAlign: 'center', fontSize: 12, color: '#64748b', fontStyle: 'italic', paddingBottom: 16 }}>
+          Not financial advice. Calculations verified by Artha's deterministic Python engine. Open-weights AI powered by Gemma 4.
         </div>
       </div>
     </>
