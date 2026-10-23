@@ -4,7 +4,7 @@ import {
   Calendar as CalendarIcon, ChevronLeft, ChevronRight,
   Sparkles, CheckCircle2, Clock, Plus, BookOpen, AlertCircle,
   TrendingUp, Shield, Wallet, ArrowDownRight, ArrowUpRight,
-  GraduationCap, Play, X, Award
+  GraduationCap, Play, X, Award, ExternalLink, Download
 } from 'lucide-react'
 
 const fmt = n => '₹' + Number(n || 0).toLocaleString('en-IN', { maximumFractionDigits: 0 })
@@ -163,6 +163,53 @@ export default function MoneyCalendar() {
   const dayInflow = selectedEvents.filter(e => e.direction === 'credit').reduce((s, e) => s + e.amount, 0)
   const dayOutflow = selectedEvents.filter(e => e.direction === 'debit').reduce((s, e) => s + e.amount, 0)
 
+  // Export event to Google Calendar (opens new tab with pre-filled event URL)
+  const exportToGoogleCalendar = (ev) => {
+    const dateStr = ev.date.replace(/-/g, '')
+    const title = encodeURIComponent(`[Artha] ${ev.title}`)
+    const details = encodeURIComponent(
+      ev.direction === 'credit'
+        ? `Income: +₹${ev.amount?.toLocaleString('en-IN') || ''} | Category: ${ev.category}`
+        : ev.direction === 'debit'
+        ? `Bill/Payment: -₹${ev.amount?.toLocaleString('en-IN') || ''} | Category: ${ev.category}`
+        : `Training: ${ev.duration || '15 mins'} | Powered by Gemma 4 Artha AI`
+    )
+    const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dateStr}/${dateStr}&details=${details}&sf=true&output=xml`
+    window.open(url, '_blank')
+  }
+
+  // Download all events as .ics file
+  const downloadAllAsICS = () => {
+    const icsLines = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Artha Financial//Gemma 4//EN',
+      'CALSCALE:GREGORIAN',
+      ...events.map(ev => {
+        const d = ev.date.replace(/-/g, '')
+        const summary = `[Artha] ${ev.title}`
+        const desc = ev.amount ? `Amount: ₹${ev.amount}` : ev.duration ? `Duration: ${ev.duration}` : ''
+        return [
+          'BEGIN:VEVENT',
+          `DTSTART:${d}`,
+          `DTEND:${d}`,
+          `SUMMARY:${summary}`,
+          `DESCRIPTION:${desc}`,
+          'END:VEVENT',
+        ].join('\r\n')
+      }),
+      'END:VCALENDAR',
+    ]
+    const blob = new Blob([icsLines.join('\r\n')], { type: 'text/calendar' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'artha-financial-calendar.ics'
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+
   return (
     <>
       <Nav />
@@ -195,9 +242,20 @@ export default function MoneyCalendar() {
           <p style={{ color: '#475569', fontSize: 15, maxWidth: 680, margin: '0 auto', lineHeight: 1.55 }}>
             Pick any date to review cash flow obligations, salary inflows, bill due dates, and schedule personalized <strong>Gemma 4 Financial Training</strong> sessions for everyday financial literacy.
           </p>
+
+          {/* Export Buttons */}
+          <div style={{ display: 'flex', gap: 10, justifyContent: 'center', marginTop: 16 }}>
+            <button onClick={downloadAllAsICS} style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#0b0f19', color: '#10b981', border: '1px solid rgba(16,185,129,0.3)', borderRadius: 8, padding: '8px 16px', fontSize: 12, fontWeight: 700, cursor: 'pointer' }}>
+              <Download size={13} /> Download as .ics (Apple/Outlook)
+            </button>
+            <a href="https://calendar.google.com/calendar/r" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#ffffff', color: '#1a73e8', border: '1px solid #dadce0', borderRadius: 8, padding: '8px 16px', fontSize: 12, fontWeight: 700, textDecoration: 'none' }}>
+              <ExternalLink size={13} /> Open Google Calendar
+            </a>
+          </div>
         </div>
 
         {/* ── TWO-COLUMN LAYOUT: CALENDAR GRID (LEFT) + SELECTED DAY PANEL (RIGHT) ── */}
+
         <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.6fr) minmax(0, 1.1fr)', gap: 24, alignItems: 'start' }}>
           
           {/* LEFT: CALENDAR CONTAINER */}
@@ -603,7 +661,7 @@ export default function MoneyCalendar() {
                           </div>
                         </div>
 
-                        <div>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 6 }}>
                           {isTraining ? (
                             <button
                               onClick={() => setActiveTrainingModule({
@@ -639,10 +697,18 @@ export default function MoneyCalendar() {
                               {isCredit ? '+' : '-'}{fmt(ev.amount)}
                             </div>
                           )}
+                          <button
+                            onClick={() => exportToGoogleCalendar(ev)}
+                            title="Add to Google Calendar"
+                            style={{ background: 'transparent', border: '1px solid #e2e8f0', borderRadius: 5, padding: '3px 7px', fontSize: 10, color: '#64748b', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 3 }}
+                          >
+                            <ExternalLink size={9} /> GCal
+                          </button>
                         </div>
                       </div>
                     )
                   })
+
                 )}
               </div>
             </div>

@@ -60,7 +60,7 @@ const DEFAULT_VISUAL_GOALS = [
 
 export default function Goals() {
   const [goals, setGoals] = useState(DEFAULT_VISUAL_GOALS)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   
   // Interactive Master Savings Slider (Monthly Savings Contribution in ₹)
   const [monthlySavingsContribution, setMonthlySavingsContribution] = useState(8500)
@@ -72,6 +72,53 @@ export default function Goals() {
   const [deadline, setDeadline] = useState('2027-06-30')
   const [category, setCategory] = useState('tech')
   const [saving, setSaving] = useState(false)
+
+  // Load real goals from API and merge with visual presets
+  useEffect(() => {
+    Promise.all([
+      getGoals().catch(() => ({ data: [] })),
+    ]).then(([goalsRes]) => {
+      const apiGoals = goalsRes.data || []
+      if (apiGoals.length > 0) {
+        // Merge API data with visual presets using goal_id matching or name matching
+        const merged = DEFAULT_VISUAL_GOALS.map(defaultG => {
+          const match = apiGoals.find(ag =>
+            ag.goal_id === defaultG.goal_id ||
+            ag.name?.toLowerCase().includes(defaultG.name?.toLowerCase().split(' ')[0]?.toLowerCase())
+          )
+          if (match) {
+            return {
+              ...defaultG,
+              goal_id: match.goal_id || defaultG.goal_id,
+              target_amount: match.target_amount || defaultG.target_amount,
+              current_saved: match.current_saved || defaultG.current_saved,
+              deadline: match.deadline || defaultG.deadline,
+              priority: match.priority || defaultG.priority,
+            }
+          }
+          return defaultG
+        })
+        // Also add any API goals that aren't in defaults
+        const extraGoals = apiGoals.filter(ag =>
+          !DEFAULT_VISUAL_GOALS.some(dg =>
+            ag.goal_id === dg.goal_id ||
+            ag.name?.toLowerCase().includes(dg.name?.toLowerCase().split(' ')[0]?.toLowerCase())
+          )
+        ).map((ag, i) => ({
+          goal_id: ag.goal_id || 200 + i,
+          name: ag.name || 'New Goal',
+          category: ag.category || 'lifestyle',
+          icon: '🎯',
+          image: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=500&auto=format&fit=crop&q=60',
+          target_amount: ag.target_amount || 50000,
+          current_saved: ag.current_saved || 0,
+          deadline: ag.deadline || '2027-12-31',
+          priority: ag.priority || 'Medium',
+        }))
+        setGoals([...merged, ...extraGoals])
+      }
+    }).finally(() => setLoading(false))
+  }, [])
 
   // Trigger celebration confetti
   const triggerConfetti = () => {
@@ -193,14 +240,15 @@ export default function Goals() {
 
         {/* ── 1. DYNAMIC SAVINGS ADJUSTER HERO CONTROL ────────────────────── */}
         <div style={{
-          background: 'linear-gradient(135deg, #062615 0%, #0d4f2e 60%, #135e38 100%)',
+          background: 'linear-gradient(135deg, #0b0f19 0%, #0f1f2e 60%, #1e293b 100%)',
           borderRadius: 24,
           padding: '28px 32px',
           color: '#ffffff',
-          boxShadow: '0 14px 40px rgba(6,38,21,0.25)',
+          boxShadow: '0 14px 40px rgba(0,0,0,0.25)',
           marginBottom: 32,
           position: 'relative',
           overflow: 'hidden',
+          border: '1px solid rgba(255,255,255,0.06)',
         }}>
           <div style={{
             display: 'flex',

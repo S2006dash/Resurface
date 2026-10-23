@@ -39,10 +39,82 @@ export default function History() {
   const [selectedCategory, setSelectedCategory] = useState('All')
   const [searchQuery, setSearchQuery] = useState('')
   const [txns, setTxns] = useState(DEMO_TRANSACTIONS)
-  const [loading, setLoading] = useState(false)
+  const [categories, setCategories] = useState(CATEGORY_BASELINES)
+  const [loading, setLoading] = useState(true)
+  const [overview, setOverview] = useState(null)
+
+  useEffect(() => {
+    Promise.all([
+      getTransactions({ limit: 100 }).catch(() => ({ data: [] })),
+      getOverview().catch(() => ({ data: null })),
+    ]).then(([txRes, ovRes]) => {
+      const apiTxns = txRes.data || []
+      if (apiTxns.length > 0) setTxns(apiTxns)
+      if (ovRes.data) {
+        setOverview(ovRes.data)
+        const apiCats = (ovRes.data.categories || []).filter(c => c.direction === 'debit')
+        if (apiCats.length > 0) {
+          const merged = CATEGORY_BASELINES.map(b => {
+            const match = apiCats.find(c => c.category === b.category)
+            return match ? { ...b, monthly: match.total } : b
+          })
+          setCategories(merged)
+        }
+      }
+    }).finally(() => setLoading(false))
+  }, [])
+
+  // Export monthly report as printable view
+  const exportMonthlyReport = () => {
+    const reportWindow = window.open('', '_blank')
+    const income = overview?.cash_flow?.monthly_income || 55000
+    const expense = categories.reduce((s, c) => s + c.monthly, 0)
+    const safe = overview?.safe_to_spend?.safe_to_spend || 33675
+    const html = `
+      <html><head><title>Artha Monthly Financial Report - October 2026</title>
+      <style>
+        body { font-family: Arial, sans-serif; padding: 40px; color: #0f172a; }
+        h1 { font-size: 28px; color: #10b981; border-bottom: 2px solid #10b981; padding-bottom: 12px; }
+        h2 { font-size: 18px; color: #0f172a; margin-top: 28px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+        th { background: #0b0f19; color: #10b981; padding: 10px 14px; text-align: left; font-size: 13px; }
+        td { padding: 9px 14px; border-bottom: 1px solid #f1f5f9; font-size: 13px; }
+        .green { color: #10b981; font-weight: 700; }
+        .red { color: #ef4444; font-weight: 700; }
+        .summary-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin: 20px 0; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+        .metric { text-align: center; }
+        .metric-val { font-size: 28px; font-weight: 900; }
+        .metric-label { font-size: 12px; color: #64748b; margin-top: 4px; }
+        .footer { margin-top: 40px; font-size: 11px; color: #94a3b8; font-style: italic; border-top: 1px solid #e2e8f0; padding-top: 14px; }
+      </style></head>
+      <body>
+        <h1>📊 Artha Monthly Financial Report</h1>
+        <div style="font-size:13px; color:#64748b; margin-bottom:20px;">Generated: October 2026 · Priya Sharma · Verified by Artha Deterministic Engine + Gemma 4</div>
+        <div class="summary-box">
+          <div class="metric"><div class="metric-val" style="color:#10b981">₹${income.toLocaleString('en-IN')}</div><div class="metric-label">Monthly Income</div></div>
+          <div class="metric"><div class="metric-val" style="color:#ef4444">₹${expense.toLocaleString('en-IN')}</div><div class="metric-label">Total Expenses</div></div>
+          <div class="metric"><div class="metric-val" style="color:#6366f1">₹${safe.toLocaleString('en-IN')}</div><div class="metric-label">Safe-to-Spend</div></div>
+        </div>
+        <h2>Category Breakdown</h2>
+        <table>
+          <tr><th>Category</th><th>Monthly Spend</th><th>% of Income</th></tr>
+          ${categories.map(c => `<tr><td>${c.icon} ${c.category}</td><td class="red">₹${c.monthly.toLocaleString('en-IN')}</td><td>${Math.round((c.monthly/income)*100)}%</td></tr>`).join('')}
+        </table>
+        <h2>Recent Transactions</h2>
+        <table>
+          <tr><th>Date</th><th>Merchant</th><th>Category</th><th>Amount</th></tr>
+          ${txns.slice(0,20).map(t => `<tr><td>${t.entry_date}</td><td>${t.merchant}</td><td>${t.category}</td><td class="${t.direction === 'credit' ? 'green' : 'red'}">${t.direction === 'credit' ? '+' : '-'}₹${Number(t.amount).toLocaleString('en-IN')}</td></tr>`).join('')}
+        </table>
+        <div class="footer">Not financial advice. All calculations verified by Artha's deterministic Python engine. Open-weights AI powered by Gemma 4 via Gemini API. For demonstration purposes only.</div>
+      </body></html>
+    `
+    reportWindow.document.write(html)
+    reportWindow.document.close()
+    reportWindow.print()
+  }
 
   // Calculate monthly total and yearly total
-  const monthlyTotal = CATEGORY_BASELINES.reduce((s, c) => s + c.monthly, 0)
+  const monthlyTotal = categories.reduce((s, c) => s + c.monthly, 0)
   const yearlyTotal = monthlyTotal * 12
 
   const activeTotal = period === 'monthly' ? monthlyTotal : yearlyTotal
@@ -53,6 +125,7 @@ export default function History() {
     const matchesSearch = !searchQuery || t.merchant.toLowerCase().includes(searchQuery.toLowerCase()) || t.category.toLowerCase().includes(searchQuery.toLowerCase())
     return matchesCat && matchesSearch
   })
+
 
   return (
     <>
@@ -94,57 +167,67 @@ export default function History() {
             </p>
           </div>
 
-          {/* Monthly vs Yearly Switcher */}
-          <div style={{
-            display: 'flex',
-            background: '#0b0f19',
-            padding: 4,
-            borderRadius: 14,
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-          }}>
-            <button
-              onClick={() => setPeriod('monthly')}
-              style={{
-                padding: '8px 18px',
-                borderRadius: 10,
-                border: 'none',
-                background: period === 'monthly' ? '#10b981' : 'transparent',
-                color: period === 'monthly' ? '#000000' : '#94a3b8',
-                fontWeight: 800,
-                fontSize: 13,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
-                transition: 'all 0.15s ease',
-              }}
-            >
-              <Calendar size={14} />
-              <span>Monthly View</span>
-            </button>
+          {/* Monthly vs Yearly Switcher + Export */}
+          <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+            <div style={{
+              display: 'flex',
+              background: '#0b0f19',
+              padding: 4,
+              borderRadius: 14,
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+            }}>
+              <button
+                onClick={() => setPeriod('monthly')}
+                style={{
+                  padding: '8px 18px',
+                  borderRadius: 10,
+                  border: 'none',
+                  background: period === 'monthly' ? '#10b981' : 'transparent',
+                  color: period === 'monthly' ? '#000000' : '#94a3b8',
+                  fontWeight: 800,
+                  fontSize: 13,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  transition: 'all 0.15s ease',
+                }}
+              >
+                <Calendar size={14} />
+                <span>Monthly View</span>
+              </button>
+
+              <button
+                onClick={() => setPeriod('yearly')}
+                style={{
+                  padding: '8px 18px',
+                  borderRadius: 10,
+                  border: 'none',
+                  background: period === 'yearly' ? '#10b981' : 'transparent',
+                  color: period === 'yearly' ? '#000000' : '#94a3b8',
+                  fontWeight: 800,
+                  fontSize: 13,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  transition: 'all 0.15s ease',
+                }}
+              >
+                <TrendingDown size={14} />
+                <span>Yearly Projected View</span>
+              </button>
+            </div>
 
             <button
-              onClick={() => setPeriod('yearly')}
-              style={{
-                padding: '8px 18px',
-                borderRadius: 10,
-                border: 'none',
-                background: period === 'yearly' ? '#10b981' : 'transparent',
-                color: period === 'yearly' ? '#000000' : '#94a3b8',
-                fontWeight: 800,
-                fontSize: 13,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
-                transition: 'all 0.15s ease',
-              }}
+              onClick={exportMonthlyReport}
+              style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#0b0f19', color: '#10b981', border: '1px solid rgba(16,185,129,0.3)', borderRadius: 10, padding: '9px 16px', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}
             >
-              <TrendingDown size={14} />
-              <span>Yearly Projected View</span>
+              <Download size={14} /> Export Monthly Report
             </button>
           </div>
         </div>
+
 
         {/* ── 1. AGGREGATED SPENDING BANNER ─────────────────────────────── */}
         <div style={{

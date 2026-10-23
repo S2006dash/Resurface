@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Nav from '../../components/Nav'
-import { voiceAsk } from '../../api'
+import { voiceAsk, getOverview } from '../../api'
 import {
   Mic, MicOff, Volume2, VolumeX, Sparkles, Send,
   ShieldCheck, MessageSquare, Play, HelpCircle,
@@ -8,6 +8,13 @@ import {
 } from 'lucide-react'
 
 const fmt = n => '₹' + Number(n || 0).toLocaleString('en-IN', { maximumFractionDigits: 0 })
+
+const GREETINGS = {
+  tamil: 'வணக்கம் பிரியா! நான் உங்கள் Artha நிதிக்கூட்டாளி. உங்கள் கணக்கு விபரங்கள், இந்த மாத செலவுகள் அல்லது சேமிப்பு பற்றி என்னிடம் கேளுங்கள்.',
+  hindi: 'नमस्ते प्रिया! मैं आपका Artha वित्तीय सहायक हूँ। अपने सुरक्षित खर्च (Safe-to-Spend), बिलों या बचत लक्ष्यों के बारे में पूछें।',
+  english: 'Hello Priya! I am your Artha Financial Co-Pilot. Ask me about your Safe-to-Spend buffer, upcoming bills, or savings goals.',
+  telugu: 'నమస్కారం ప్రియా! నేను మీ Artha ఆర్థిక సహాయకుడిని. మీ సేఫ్-టు-స్పెండ్ మొత్తం లేదా రాబోయే బిల్లుల గురించి నన్ను అడగండి.',
+}
 
 export default function VoiceArtha() {
   const [selectedLang, setSelectedLang] = useState('tamil')
@@ -19,6 +26,7 @@ export default function VoiceArtha() {
   const [activeSpeechMsgId, setActiveSpeechMsgId] = useState(null)
   const [copiedId, setCopiedId] = useState(null)
   const [micStatusMsg, setMicStatusMsg] = useState('')
+  const [liveEngineData, setLiveEngineData] = useState(null)
   const recognitionRef = useRef(null)
   const transcriptBottomRef = useRef(null)
 
@@ -27,7 +35,7 @@ export default function VoiceArtha() {
     {
       id: 'msg-init-1',
       sender: 'artha',
-      text: 'வணக்கம் பிரியா! நான் உங்கள் Artha நிதிக்கூட்டாளி. உங்கள் கணக்கு விபரங்கள், இந்த மாத செலவுகள் அல்லது சேமிப்பு பற்றி என்னிடம் கேளுங்கள்.',
+      text: GREETINGS.tamil,
       language: 'tamil',
       timestamp: '11:30 AM',
       engineContext: {
@@ -37,6 +45,39 @@ export default function VoiceArtha() {
       },
     },
   ])
+
+  // Fetch real engine data on mount
+  useEffect(() => {
+    getOverview().then(res => {
+      const data = res.data
+      if (data) {
+        const nextB = data.bills_due?.[0]
+        const ctx = {
+          safe_to_spend: data.safe_to_spend?.safe_to_spend || 33675,
+          monthly_expenses: Math.abs(data.cash_flow?.monthly_expense || 34687),
+          next_bill: nextB ? `${nextB.description} (${fmt(nextB.amount)})` : 'Star Health Insurance (₹12,000)',
+        }
+        setLiveEngineData(ctx)
+        setTranscripts(prev => prev.map(m => m.id === 'msg-init-1' ? { ...m, engineContext: ctx } : m))
+      }
+    }).catch(err => console.warn('Could not load live overview for VoiceArtha:', err))
+  }, [])
+
+  // Adapt initial greeting when user switches language
+  const handleLanguageChange = (lang) => {
+    setSelectedLang(lang)
+    setTranscripts(prev => {
+      if (prev.length === 1 && prev[0].id === 'msg-init-1') {
+        return [{
+          ...prev[0],
+          text: GREETINGS[lang] || GREETINGS.english,
+          language: lang,
+        }]
+      }
+      return prev
+    })
+  }
+
 
   // Regional voice prompts
   const PRESET_QUERIES = {
@@ -315,7 +356,7 @@ export default function VoiceArtha() {
             ].map(l => (
               <button
                 key={l.id}
-                onClick={() => { setSelectedLang(l.id); stopSpeaking() }}
+                onClick={() => { handleLanguageChange(l.id); stopSpeaking() }}
                 style={{
                   padding: '7px 16px',
                   borderRadius: 20,
