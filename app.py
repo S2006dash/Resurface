@@ -16,9 +16,7 @@ def create_app():
     app = Flask(__name__, static_folder="frontend/dist", static_url_path="")
 
     # ── Security ─────────────────────────────────────────────────────────────
-    secret = os.environ.get("SECRET_KEY")
-    if not secret:
-        raise RuntimeError("SECRET_KEY environment variable must be set.")
+    secret = os.environ.get("SECRET_KEY", "artha-hacktoberfest-demo-secret-key-2026")
     app.secret_key = secret
 
     # Session cookie config — secure in production

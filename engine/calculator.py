@@ -12,7 +12,7 @@ Functions:
 
 import math
 import random
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from collections import defaultdict
 
 from db import query
@@ -112,6 +112,19 @@ def category_totals(customer_id: int, since_days: int = 30) -> list:
     ]
 
 
+def _parse_date(d):
+    if isinstance(d, date):
+        return d
+    if isinstance(d, datetime):
+        return d.date()
+    if isinstance(d, str):
+        try:
+            return datetime.strptime(d[:10], "%Y-%m-%d").date()
+        except Exception:
+            pass
+    return date.today()
+
+
 # ── Bills due soon ────────────────────────────────────────────────────────────
 
 def bills_due(customer_id: int, days_ahead: int = 30) -> list:
@@ -134,18 +147,20 @@ def bills_due(customer_id: int, days_ahead: int = 30) -> list:
     )
     result = []
     for r in liabs:
+        d_val = _parse_date(r["due_date"])
         result.append({
             "type": "liability", "kind": r["kind"], "name": r["name"],
             "amount": float(r["amount"] or 0),
             "due_date": str(r["due_date"]),
-            "days_until": (r["due_date"] - today).days,
+            "days_until": (d_val - today).days,
         })
     for r in pols:
+        d_val = _parse_date(r["due_date"])
         result.append({
             "type": "policy", "kind": "insurance", "name": r["name"],
             "amount": float(r["amount"] or 0),
             "due_date": str(r["due_date"]),
-            "days_until": (r["due_date"] - today).days,
+            "days_until": (d_val - today).days,
         })
     result.sort(key=lambda x: x["days_until"])
     return result
@@ -344,7 +359,7 @@ def goal_simulate(customer_id: int, goal_id: int, what_ifs: dict = None, num_sim
         return {"error": "Goal not found"}
 
     target   = float(goal["target_amount"])
-    deadline = goal["deadline"]
+    deadline = _parse_date(goal["deadline"])
     today    = date.today()
     months_left = max(1, round((deadline - today).days / 30))
 

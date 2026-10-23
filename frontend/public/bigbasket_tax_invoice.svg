@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 950" width="100%" height="100%" style="background:#ffffff; font-family:'Segoe UI',Roboto,Helvetica,sans-serif;">
+  <rect x="15" y="15" width="670" height="920" rx="8" fill="#ffffff" stroke="#84cc16" stroke-width="2"/>
+
+  <!-- Header -->
+  <rect x="15" y="15" width="670" height="110" rx="8" fill="#4d7c0f"/>
+  <text x="350" y="55" fill="#ffffff" font-size="24" font-weight="900" text-anchor="middle" letter-spacing="1">BIGBASKET SUPERSTORE</text>
+  <text x="350" y="82" fill="#ecfccb" font-size="13" font-weight="600" text-anchor="middle">Supermarket Grocery Supplies Pvt Ltd · India's Largest Online Grocer</text>
+  <text x="350" y="104" fill="#d9f99d" font-size="11" text-anchor="middle">GSTIN: 29AABCB1234F1Z5 · CIN: U51101KA2011PTC060731</text>
+
+  <!-- Invoice Meta -->
+  <rect x="35" y="145" width="630" height="95" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="55" y="175" fill="#64748b" font-size="11" font-weight="700">TAX INVOICE NUMBER</text>
+  <text x="55" y="198" fill="#0f172a" font-size="16" font-weight="800">BB-BLR-2026-8941</text>
+
+  <text x="260" y="175" fill="#64748b" font-size="11" font-weight="700">DELIVERY DATE</text>
+  <text x="260" y="198" fill="#0f172a" font-size="15" font-weight="700">18-Oct-2026</text>
+
+  <text x="470" y="175" fill="#64748b" font-size="11" font-weight="700">ORDER ID</text>
+  <text x="470" y="198" fill="#0f172a" font-size="15" font-weight="700">#ORD-9418290</text>
+
+  <text x="55" y="226" fill="#475569" font-size="12">Delivered to: Priya Sharma · Koramangala 5th Block</text>
+
+  <!-- Items Table -->
+  <rect x="35" y="260" width="630" height="360" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+  <rect x="35" y="260" width="630" height="35" rx="6" fill="#f1f5f9"/>
+  <text x="55" y="283" fill="#475569" font-size="12" font-weight="800">ITEM DESCRIPTION</text>
+  <text x="360" y="283" fill="#475569" font-size="12" font-weight="800">QTY</text>
+  <text x="450" y="283" fill="#475569" font-size="12" font-weight="800">MRP</text>
+  <text x="580" y="283" fill="#475569" font-size="12" font-weight="800" text-anchor="end">TOTAL (₹)</text>
+
+  <text x="55" y="325" fill="#0f172a" font-size="13" font-weight="700">Aashirvaad Shudh Chakki Atta 5kg</text>
+  <text x="360" y="325" fill="#0f172a" font-size="13">1</text>
+  <text x="450" y="325" fill="#64748b" font-size="13">₹320</text>
+  <text x="580" y="325" fill="#0f172a" font-size="13" font-weight="700" text-anchor="end">285.00</text>
+
+  <text x="55" y="370" fill="#0f172a" font-size="13" font-weight="700">Fortune Sunlite Refined Sunflower Oil 1L Pouch</text>
+  <text x="360" y="370" fill="#0f172a" font-size="13">2</text>
+  <text x="450" y="370" fill="#64748b" font-size="13">₹310</text>
+  <text x="580" y="370" fill="#0f172a" font-size="13" font-weight="700" text-anchor="end">270.00</text>
+
+  <text x="55" y="415" fill="#0f172a" font-size="13" font-weight="700">Amul Butter Pasteurised 500g Pack</text>
+  <text x="360" y="415" fill="#0f172a" font-size="13">1</text>
+  <text x="450" y="415" fill="#64748b" font-size="13">₹285</text>
+  <text x="580" y="415" fill="#0f172a" font-size="13" font-weight="700" text-anchor="end">275.00</text>
+
+  <text x="55" y="460" fill="#0f172a" font-size="13" font-weight="700">Tata Salt Vacuum Evaporated 1kg</text>
+  <text x="360" y="460" fill="#0f172a" font-size="13">2</text>
+  <text x="450" y="460" fill="#64748b" font-size="13">₹60</text>
+  <text x="580" y="460" fill="#0f172a" font-size="13" font-weight="700" text-anchor="end">56.00</text>
+
+  <text x="55" y="505" fill="#0f172a" font-size="13" font-weight="700">Fresh Vegetables &amp; Seasonal Fruits Basket</text>
+  <text x="360" y="505" fill="#0f172a" font-size="13">1</text>
+  <text x="450" y="505" fill="#64748b" font-size="13">₹1,100</text>
+  <text x="580" y="505" fill="#0f172a" font-size="13" font-weight="700" text-anchor="end">1,064.00</text>
+
+  <line x1="35" y1="540" x2="665" y2="540" stroke="#e2e8f0" stroke-width="1"/>
+
+  <text x="55" y="575" fill="#475569" font-size="12">Total Savings: ₹125.00 · Delivery Charges: FREE</text>
+
+  <!-- Big Total Highlight Box -->
+  <rect x="35" y="640" width="630" height="95" rx="8" fill="#365314"/>
+  <text x="60" y="680" fill="#d9f99d" font-size="14" font-weight="700">TOTAL AMOUNT PAID</text>
+  <text x="60" y="718" fill="#ffffff" font-size="36" font-weight="900">₹1,950.00</text>
+  <text x="640" y="685" fill="#d9f99d" font-size="12" font-weight="600" text-anchor="end">Category: Groceries</text>
+  <text x="640" y="710" fill="#ffffff" font-size="13" font-weight="800" text-anchor="end">Paid via HDFC Debit Card</text>
+
+  <text x="350" y="870" fill="#64748b" font-size="11" text-anchor="middle">Computer generated tax invoice. No signature required.</text>
+  <text x="350" y="890" fill="#94a3b8" font-size="10" text-anchor="middle">BigBasket Customer Support: 1860-123-1000 · www.bigbasket.com</text>
+</svg>

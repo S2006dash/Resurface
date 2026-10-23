@@ -17,10 +17,18 @@ export const transfer     = (from_account, to_account, amount) =>
   api.post('/transfer', { from_account, to_account, amount })
 
 // ── Artha ingest ──────────────────────────────────────────────────────────────
-export const uploadFile = (formData) =>
-  api.post('/artha/upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
-export const uploadText = (text, doc_type = 'sms_text') =>
-  api.post('/artha/upload', { text, doc_type })
+export const uploadFile = (formData, customKey = null) => {
+  const key = customKey || localStorage.getItem('artha_gemini_key')
+  const headers = { 'Content-Type': 'multipart/form-data' }
+  if (key) headers['X-Gemini-Key'] = key
+  return api.post('/artha/upload', formData, { headers })
+}
+export const uploadText = (text, doc_type = 'sms_text', customKey = null) => {
+  const key = customKey || localStorage.getItem('artha_gemini_key')
+  const headers = {}
+  if (key) headers['X-Gemini-Key'] = key
+  return api.post('/artha/upload', { text, doc_type }, { headers })
+}
 export const confirmRows = (doc_type, provider, rows) =>
   api.post('/artha/confirm', { doc_type, provider, rows })
 

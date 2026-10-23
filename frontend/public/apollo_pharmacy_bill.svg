@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 950" width="100%" height="100%" style="background:#ffffff; font-family:'Segoe UI',Roboto,Helvetica,sans-serif;">
+  <rect x="15" y="15" width="670" height="920" rx="8" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+
+  <!-- Header -->
+  <rect x="15" y="15" width="670" height="110" rx="8" fill="#15803d"/>
+  <text x="350" y="55" fill="#ffffff" font-size="24" font-weight="900" text-anchor="middle" letter-spacing="1">APOLLO PHARMACY</text>
+  <text x="350" y="82" fill="#dcfce7" font-size="13" font-weight="600" text-anchor="middle">Unit of Apollo Hospitals Enterprise Ltd. · 24x7 Healthcare</text>
+  <text x="350" y="104" fill="#bbf7d0" font-size="11" text-anchor="middle">GSTIN: 33AABCA1234F1Z8 · DL No: 20B/KA/10492 · FSSAI: 11219334000182</text>
+
+  <!-- Invoice Meta -->
+  <rect x="35" y="145" width="630" height="95" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="55" y="175" fill="#64748b" font-size="11" font-weight="700">TAX INVOICE / CASH BILL NO.</text>
+  <text x="55" y="198" fill="#0f172a" font-size="16" font-weight="800">APL-BLR-892104</text>
+
+  <text x="260" y="175" fill="#64748b" font-size="11" font-weight="700">INVOICE DATE &amp; TIME</text>
+  <text x="260" y="198" fill="#0f172a" font-size="15" font-weight="700">21-Oct-2026, 14:32</text>
+
+  <text x="470" y="175" fill="#64748b" font-size="11" font-weight="700">DOCTOR / PRESCRIPTION</text>
+  <text x="470" y="198" fill="#0f172a" font-size="15" font-weight="700">Dr. Rajesh Menon</text>
+
+  <text x="55" y="226" fill="#475569" font-size="12">Customer: Priya Sharma (Phone: +91 98765 43210)</text>
+
+  <!-- Items Table -->
+  <rect x="35" y="260" width="630" height="360" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+  <rect x="35" y="260" width="630" height="35" rx="6" fill="#f1f5f9"/>
+  <text x="55" y="283" fill="#475569" font-size="12" font-weight="800">ITEM DESCRIPTION</text>
+  <text x="320" y="283" fill="#475569" font-size="12" font-weight="800">HSN / BATCH</text>
+  <text x="440" y="283" fill="#475569" font-size="12" font-weight="800">QTY</text>
+  <text x="580" y="283" fill="#475569" font-size="12" font-weight="800" text-anchor="end">AMOUNT (₹)</text>
+
+  <text x="55" y="325" fill="#0f172a" font-size="13" font-weight="700">Dolo 650mg Paracetamol Tablets (Strip of 15)</text>
+  <text x="320" y="325" fill="#64748b" font-size="12">300490 · B#BT401</text>
+  <text x="440" y="325" fill="#0f172a" font-size="13">2</text>
+  <text x="580" y="325" fill="#0f172a" font-size="13" font-weight="700" text-anchor="end">120.00</text>
+
+  <text x="55" y="375" fill="#0f172a" font-size="13" font-weight="700">Becadexamin Multivitamin Capsules (Bottle of 30)</text>
+  <text x="320" y="375" fill="#64748b" font-size="12">300450 · B#MN882</text>
+  <text x="440" y="375" fill="#0f172a" font-size="13">1</text>
+  <text x="580" y="375" fill="#0f172a" font-size="13" font-weight="700" text-anchor="end">280.00</text>
+
+  <text x="55" y="425" fill="#0f172a" font-size="13" font-weight="700">Cough Reliever Herbal Syrup 100ml</text>
+  <text x="320" y="425" fill="#64748b" font-size="12">300490 · B#CR109</text>
+  <text x="440" y="425" fill="#0f172a" font-size="13">1</text>
+  <text x="580" y="425" fill="#0f172a" font-size="13" font-weight="700" text-anchor="end">195.00</text>
+
+  <text x="55" y="475" fill="#0f172a" font-size="13" font-weight="700">Accu-Chek Active Test Strips 50s</text>
+  <text x="320" y="475" fill="#64748b" font-size="12">902780 · B#AC902</text>
+  <text x="440" y="475" fill="#0f172a" font-size="13">1</text>
+  <text x="580" y="475" fill="#0f172a" font-size="13" font-weight="700" text-anchor="end">585.00</text>
+
+  <line x1="35" y1="520" x2="665" y2="520" stroke="#e2e8f0" stroke-width="1"/>
+
+  <text x="55" y="555" fill="#475569" font-size="12">Subtotal Amount: ₹1,180.00</text>
+  <text x="260" y="555" fill="#475569" font-size="12">CGST (2.5%): ₹30.00</text>
+  <text x="440" y="555" fill="#475569" font-size="12">SGST (2.5%): ₹30.00</text>
+
+  <!-- Grand Total Box -->
+  <rect x="35" y="640" width="630" height="95" rx="8" fill="#14532d"/>
+  <text x="60" y="680" fill="#bbf7d0" font-size="14" font-weight="700">NET TOTAL PAID (PAID VIA UPI / PHONEPE)</text>
+  <text x="60" y="718" fill="#ffffff" font-size="36" font-weight="900">₹1,240.00</text>
+  <text x="640" y="685" fill="#bbf7d0" font-size="12" font-weight="600" text-anchor="end">Category: Health &amp; Pharmacy</text>
+  <text x="640" y="710" fill="#ffffff" font-size="13" font-weight="800" text-anchor="end">Txn Status: SUCCESSFUL</text>
+
+  <!-- Payment Details -->
+  <rect x="35" y="755" width="630" height="65" rx="6" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+  <text x="55" y="782" fill="#166534" font-size="11" font-weight="700">PAYMENT REF / UTR</text>
+  <text x="55" y="804" fill="#14532d" font-size="14" font-weight="800">UPI/429401928471</text>
+  <text x="320" y="792" fill="#166534" font-size="12">Cashier: Suresh K · Counter 02</text>
+
+  <!-- Footer -->
+  <text x="350" y="870" fill="#64748b" font-size="11" text-anchor="middle">Medicines sold without doctor prescription strictly prohibited for Schedule H/X drugs.</text>
+  <text x="350" y="890" fill="#94a3b8" font-size="10" text-anchor="middle">Thank you for visiting Apollo Pharmacy · Visit www.apollopharmacy.in</text>
+</svg>

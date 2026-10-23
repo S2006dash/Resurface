@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 950" width="100%" height="100%" style="background:#ffffff; font-family:'Segoe UI',Roboto,Helvetica,sans-serif;">
+  <defs>
+    <linearGradient id="bescomGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="15" y="15" width="670" height="920" rx="8" fill="#ffffff" stroke="#0284c7" stroke-width="2"/>
+
+  <!-- Header Banner -->
+  <rect x="15" y="15" width="670" height="110" rx="8" fill="url(#bescomGrad)"/>
+  <text x="350" y="55" fill="#ffffff" font-size="22" font-weight="900" text-anchor="middle" letter-spacing="0.5">BANGALORE ELECTRICITY SUPPLY CO. LTD.</text>
+  <text x="350" y="82" fill="#e0f2fe" font-size="14" font-weight="600" text-anchor="middle">BESCOM · LT Electricity Monthly Bill &amp; Demand Notice</text>
+  <text x="350" y="104" fill="#bae6fd" font-size="11" text-anchor="middle">Govt of Karnataka Undertaking · GSTIN: 29AAACB1234F1Z8</text>
+
+  <!-- Consumer Details Grid -->
+  <rect x="35" y="145" width="630" height="135" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="55" y="175" fill="#64748b" font-size="12" font-weight="700">CONSUMER ACCOUNT ID</text>
+  <text x="55" y="198" fill="#0f172a" font-size="18" font-weight="800">0349812754</text>
+
+  <text x="260" y="175" fill="#64748b" font-size="12" font-weight="700">SUB-DIVISION / TARIFF</text>
+  <text x="260" y="198" fill="#0f172a" font-size="16" font-weight="700">Koramangala (C4) / LT-2(a)</text>
+
+  <text x="470" y="175" fill="#64748b" font-size="12" font-weight="700">SANCTIONED LOAD</text>
+  <text x="470" y="198" fill="#0f172a" font-size="16" font-weight="700">4.00 KW</text>
+
+  <line x1="35" y1="215" x2="665" y2="215" stroke="#e2e8f0" stroke-width="1"/>
+
+  <text x="55" y="240" fill="#64748b" font-size="12" font-weight="700">CONSUMER NAME &amp; ADDRESS</text>
+  <text x="55" y="260" fill="#334155" font-size="13" font-weight="600">Priya Sharma · #42, 3rd Cross, 5th Block, Koramangala, Bengaluru 560034</text>
+
+  <!-- Bill Dates Card -->
+  <rect x="35" y="295" width="630" height="75" rx="6" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+  <text x="60" y="325" fill="#166534" font-size="12" font-weight="700">BILL DATE</text>
+  <text x="60" y="350" fill="#14532d" font-size="17" font-weight="800">18-Oct-2026</text>
+
+  <text x="260" y="325" fill="#166534" font-size="12" font-weight="700">BILL NUMBER</text>
+  <text x="260" y="350" fill="#14532d" font-size="16" font-weight="700">BES-2026-90412</text>
+
+  <text x="470" y="325" fill="#b91c1c" font-size="12" font-weight="700">DUE DATE (PAY BY)</text>
+  <text x="470" y="350" fill="#dc2626" font-size="18" font-weight="900">02-Nov-2026</text>
+
+  <!-- Meter Reading Section -->
+  <rect x="35" y="385" width="630" height="105" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="55" y="415" fill="#475569" font-size="13" font-weight="800">METER READING PARTICULARS</text>
+  
+  <text x="55" y="445" fill="#64748b" font-size="12">Previous Reading: <tspan font-weight="700" fill="#0f172a">14,210</tspan></text>
+  <text x="260" y="445" fill="#64748b" font-size="12">Current Reading: <tspan font-weight="700" fill="#0f172a">14,494</tspan></text>
+  <text x="470" y="445" fill="#0284c7" font-size="13" font-weight="800">Billed Units: 284 kWh</text>
+
+  <text x="55" y="470" fill="#64748b" font-size="11">Meter Status: NORMAL (OK) · Meter Const: 1.00</text>
+
+  <!-- Charges Breakdown Table -->
+  <rect x="35" y="505" width="630" height="240" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+  <rect x="35" y="505" width="630" height="35" rx="6" fill="#f1f5f9"/>
+  <text x="55" y="528" fill="#475569" font-size="12" font-weight="800">DESCRIPTION OF TARIFF CHARGES</text>
+  <text x="580" y="528" fill="#475569" font-size="12" font-weight="800" text-anchor="end">AMOUNT (₹)</text>
+
+  <text x="55" y="565" fill="#334155" font-size="13">Fixed Charges (4.00 KW @ ₹110/KW)</text>
+  <text x="580" y="565" fill="#0f172a" font-size="13" font-weight="600" text-anchor="end">440.00</text>
+
+  <text x="55" y="595" fill="#334155" font-size="13">Energy Charges (284 Units Tier-1 &amp; Tier-2)</text>
+  <text x="580" y="595" fill="#0f172a" font-size="13" font-weight="600" text-anchor="end">1,960.00</text>
+
+  <text x="55" y="625" fill="#334155" font-size="13">Fuel Adjustment Cost (FAC / FPPCA)</text>
+  <text x="580" y="625" fill="#0f172a" font-size="13" font-weight="600" text-anchor="end">198.50</text>
+
+  <text x="55" y="655" fill="#334155" font-size="13">Electricity Duty (Tax 9%)</text>
+  <text x="580" y="655" fill="#0f172a" font-size="13" font-weight="600" text-anchor="end">216.00</text>
+
+  <text x="55" y="685" fill="#334155" font-size="13">Arrears / Previous Adjustments</text>
+  <text x="580" y="685" fill="#0f172a" font-size="13" font-weight="600" text-anchor="end">0.00</text>
+
+  <text x="55" y="715" fill="#334155" font-size="13">Interest / Rounding</text>
+  <text x="580" y="715" fill="#0f172a" font-size="13" font-weight="600" text-anchor="end">25.50</text>
+
+  <!-- Big Total Due Highlight Box -->
+  <rect x="35" y="760" width="630" height="95" rx="8" fill="#0369a1"/>
+  <text x="60" y="800" fill="#e0f2fe" font-size="14" font-weight="700">TOTAL AMOUNT PAYABLE (ON OR BEFORE DUE DATE)</text>
+  <text x="60" y="838" fill="#ffffff" font-size="36" font-weight="900">₹2,840.00</text>
+
+  <text x="640" y="805" fill="#e0f2fe" font-size="12" font-weight="600" text-anchor="end">Category: Utility &amp; Bills</text>
+  <text x="640" y="830" fill="#bae6fd" font-size="13" font-weight="800" text-anchor="end">Payment Status: UNPAID</text>
+
+  <!-- Footer Notice -->
+  <text x="350" y="895" fill="#64748b" font-size="11" text-anchor="middle">Pay online via BESCOM portal, BBPS, or UPI. Late payment surcharge of ₹70 applicable after due date.</text>
+  <text x="350" y="915" fill="#94a3b8" font-size="10" text-anchor="middle">Helpline: 1912 · Generated digitally by Karnataka Electricity Regulatory Commission (KERC)</text>
+</svg>
