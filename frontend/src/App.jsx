@@ -15,6 +15,7 @@ import Anomalies        from './pages/artha/Anomalies'
 import WhatIfSimulator  from './pages/artha/WhatIfSimulator'
 import Reconciliation   from './pages/artha/Reconciliation'
 import VoiceArtha       from './pages/artha/VoiceArtha'
+import MoneyCalendar   from './pages/artha/MoneyCalendar'
 import JargonBuster     from './components/artha/JargonBuster'
 
 function ProtectedRoute({ children }) {
@@ -42,6 +43,7 @@ export default function App() {
           <Route path="/artha/simulator"       element={<ProtectedRoute><WhatIfSimulator /></ProtectedRoute>} />
           <Route path="/artha/reconciliation"  element={<ProtectedRoute><Reconciliation /></ProtectedRoute>} />
           <Route path="/artha/voice"          element={<ProtectedRoute><VoiceArtha /></ProtectedRoute>} />
+          <Route path="/artha/calendar"       element={<ProtectedRoute><MoneyCalendar /></ProtectedRoute>} />
           <Route path="/artha/upload"         element={<ProtectedRoute><Upload /></ProtectedRoute>} />
           <Route path="/artha/insights"       element={<ProtectedRoute><Insights /></ProtectedRoute>} />
           <Route path="/artha/goals"          element={<ProtectedRoute><Goals /></ProtectedRoute>} />

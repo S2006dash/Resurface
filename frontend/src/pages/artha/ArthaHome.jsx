@@ -263,6 +263,7 @@ export default function ArthaHome() {
           }}>
             {[
               { id: 'what-if', label: '🎲 What-If Simulator', count: '4 Scenarios' },
+              { id: 'calendar', label: '📅 Money Calendar', count: 'Plan & Learn' },
               { id: 'anomalies', label: '🛡️ Scam Warning', count: `${anomaliesCount} Finding` },
               { id: 'voice', label: '🎙️ Voice Artha', count: 'Gemma 4' },
               { id: 'recon', label: '⚖️ Reconciliation', count: 'Multi-Source' },
@@ -346,6 +347,43 @@ export default function ArthaHome() {
                 <Link to="/artha/simulator" style={{ textDecoration: 'none', background: '#f8fafc', padding: 14, borderRadius: 10, border: '1px solid #e2e8f0', color: '#0f172a' }}>
                   <div style={{ fontSize: 12, fontWeight: 700, color: '#6366f1' }}>📱 ₹45,000 Phone Purchase</div>
                   <div style={{ fontSize: 13, marginTop: 4, color: '#475569' }}>6-mo EMI splits cost safely without delaying primary goal.</div>
+                </Link>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'calendar' && (
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+                <div>
+                  <h3 style={{ fontSize: 18, fontWeight: 800, color: '#064e3b', margin: 0 }}>
+                    Money Calendar & Financial Training
+                  </h3>
+                  <p style={{ fontSize: 13, color: '#64748b', margin: '4px 0 0' }}>
+                    Track salary credits, rent dates, card dues, and schedule bite-sized Gemma 4 financial coaching.
+                  </p>
+                </div>
+                <Link to="/artha/calendar" style={{ fontSize: 12, fontWeight: 700, color: '#064e3b', textDecoration: 'none' }}>
+                  Open Full Interactive Calendar →
+                </Link>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12, marginTop: 14 }}>
+                <Link to="/artha/calendar" style={{ textDecoration: 'none', background: '#f0fdf4', padding: 14, borderRadius: 10, border: '1px solid #bbf7d0', color: '#0f172a' }}>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: '#15803d' }}>💰 10th of Month · Salary Day</div>
+                  <div style={{ fontSize: 13, marginTop: 4, color: '#475569' }}>+₹55,000 TCS credit arrives. Safe-to-spend recalibrates.</div>
+                </Link>
+                <Link to="/artha/calendar" style={{ textDecoration: 'none', background: '#fef2f2', padding: 14, borderRadius: 10, border: '1px solid #fecaca', color: '#0f172a' }}>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: '#b91c1c' }}>🏠 12th of Month · Rent Due</div>
+                  <div style={{ fontSize: 13, marginTop: 4, color: '#475569' }}>-₹18,000 auto-debit reserved in advance from balance.</div>
+                </Link>
+                <Link to="/artha/calendar" style={{ textDecoration: 'none', background: '#eff6ff', padding: 14, borderRadius: 10, border: '1px solid #bfdbfe', color: '#0f172a' }}>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: '#1d4ed8' }}>🎓 18th Nov · Tax Planning 80C</div>
+                  <div style={{ fontSize: 13, marginTop: 4, color: '#475569' }}>Scheduled Gemma 4 session: Save up to ₹46,800 on taxes.</div>
+                </Link>
+                <Link to="/artha/calendar" style={{ textDecoration: 'none', background: '#faf5ff', padding: 14, borderRadius: 10, border: '1px solid #e9d5ff', color: '#0f172a' }}>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: '#7e22ce' }}>🛡️ 10th Nov · Star Health Policy</div>
+                  <div style={{ fontSize: 13, marginTop: 4, color: '#475569' }}>Annual renewal ₹12,000 due. Safe buffer protects payment.</div>
                 </Link>
               </div>
             </div>

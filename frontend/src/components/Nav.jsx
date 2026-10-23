@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import {
   ShieldAlert, Calculator, Scale, Mic, Sparkles,
-  Upload, Target, ArrowRightLeft, User, LogOut
+  Upload, Target, ArrowRightLeft, User, LogOut, Calendar
 } from 'lucide-react'
 
 export default function Nav() {
@@ -89,6 +89,11 @@ export default function Nav() {
       <Link to="/artha/voice" style={linkStyle(isSub('/artha/voice'))}>
         <Mic size={14} color="#a7f3d0" />
         <span>Voice AI</span>
+      </Link>
+
+      <Link to="/artha/calendar" style={linkStyle(isSub('/artha/calendar'))}>
+        <Calendar size={14} color="#fde047" />
+        <span>Calendar</span>
       </Link>
 
       <Link to="/artha/goals" style={linkStyle(isSub('/artha/goals'))}>
