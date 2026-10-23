@@ -17,15 +17,24 @@ def get_connection():
     """Return a new psycopg2 connection. Caller must close it."""
     url = os.environ.get("DATABASE_URL")
     if url:
-        r = urlparse(url)
-        conn = psycopg2.connect(
-            host=r.hostname,
-            port=r.port or 5432,
-            database=r.path.lstrip("/"),
-            user=r.username,
-            password=r.password,
-            sslmode="require" if "digitalocean" in (r.hostname or "") else "prefer",
-        )
+        if url.startswith("postgres://"):
+            url = url.replace("postgres://", "postgresql://", 1)
+        try:
+            conn = psycopg2.connect(url)
+            conn.autocommit = False
+            return conn
+        except Exception:
+            r = urlparse(url)
+            conn = psycopg2.connect(
+                host=r.hostname,
+                port=r.port or 5432,
+                database=r.path.lstrip("/"),
+                user=r.username,
+                password=r.password,
+                sslmode="require" if any(k in (r.hostname or "") for k in ["digitalocean", "neon", "supabase", "aiven", "render"]) else "prefer",
+            )
+            conn.autocommit = False
+            return conn
     else:
         conn = psycopg2.connect(
             host=os.environ.get("DB_HOST", "localhost"),
@@ -34,8 +43,8 @@ def get_connection():
             user=os.environ.get("DB_USER", "postgres"),
             password=os.environ.get("DB_PASSWORD", ""),
         )
-    conn.autocommit = False
-    return conn
+        conn.autocommit = False
+        return conn
 
 
 def query(sql, params=None, fetch="all"):
