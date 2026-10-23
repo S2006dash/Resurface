@@ -63,27 +63,28 @@ export default function ArthaHome() {
   return (
     <>
       <Nav />
-      <div style={{ maxWidth: 1140, margin: '0 auto', padding: '28px 20px', background: '#f7faf7' }}>
+      <div style={{ maxWidth: 1160, margin: '0 auto', padding: '28px 20px', background: '#f8fafc' }}>
         
-        {/* ── 1. HERO BANNER: Inspired by User Slide ────────────────────────── */}
+        {/* ── 1. HERO BANNER: Modern Fintech Obsidian & Mint Glow ────────────────── */}
         <div style={{
-          background: 'linear-gradient(135deg, #09331e 0%, #0d4f2e 100%)',
-          borderRadius: 20,
+          background: 'linear-gradient(135deg, #0b0f19 0%, #111827 50%, #1e293b 100%)',
+          borderRadius: 22,
           padding: '30px 34px',
           color: '#ffffff',
-          boxShadow: '0 10px 30px rgba(9, 51, 30, 0.25)',
+          boxShadow: '0 12px 36px rgba(0, 0, 0, 0.25)',
           marginBottom: 28,
           position: 'relative',
           overflow: 'hidden',
+          border: '1px solid rgba(255, 255, 255, 0.08)',
         }}>
-          {/* Subtle glow */}
+          {/* Cyan/Mint ambient glow */}
           <div style={{
             position: 'absolute',
             top: -40,
             right: -40,
-            width: 200,
-            height: 200,
-            background: 'radial-gradient(circle, rgba(125,255,179,0.2) 0%, transparent 70%)',
+            width: 220,
+            height: 220,
+            background: 'radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 70%)',
             borderRadius: '50%',
             pointerEvents: 'none',
           }} />
@@ -94,8 +95,9 @@ export default function ArthaHome() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: 6,
-                background: 'rgba(125,255,179,0.2)',
-                color: '#7dffb3',
+                background: 'rgba(16, 185, 129, 0.15)',
+                border: '1px solid rgba(16, 185, 129, 0.3)',
+                color: '#10b981',
                 padding: '4px 12px',
                 borderRadius: 20,
                 fontSize: 12,
@@ -105,7 +107,7 @@ export default function ArthaHome() {
               }}>
                 <span>✦ Artha Financial Co-Pilot</span>
                 <span>•</span>
-                <span>Powered by Gemma 4</span>
+                <span>Gemma 4 Multimodal AI</span>
               </div>
               <h1 style={{ fontSize: 26, fontWeight: 800, margin: '0 0 8px', lineHeight: 1.3, color: '#ffffff' }}>
                 From Disconnected Financial Data to Personalized Well-Being

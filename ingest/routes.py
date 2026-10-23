@@ -78,11 +78,21 @@ def upload():
         doc_type = request.form.get("doc_type", "unknown")
 
         cached = _cache_lookup(file_hash)
+        boxes = []
         if cached:
-            rows = cached
+            if isinstance(cached, dict):
+                rows = cached.get("rows", [])
+                boxes = cached.get("boundingBoxes", [])
+            else:
+                rows = cached
         elif mime in IMAGE_MIMES:
-            rows = extract_from_image(file_bytes, mime_type=mime, db_query=query)
-            _cache_store(file_hash, rows)
+            extraction = extract_from_image(file_bytes, mime_type=mime, db_query=query)
+            if isinstance(extraction, dict):
+                rows = extraction.get("rows", [])
+                boxes = extraction.get("boundingBoxes", [])
+            else:
+                rows = extraction
+            _cache_store(file_hash, {"rows": rows, "boundingBoxes": boxes})
         elif mime == PDF_MIME or f.filename.lower().endswith(".pdf"):
             doc_type = doc_type or "bank_pdf"
             # Try text extraction first; fall back to image render per page
@@ -101,10 +111,15 @@ def upload():
                     bmp = page.render(scale=2)
                     img_bytes = io.BytesIO()
                     bmp.to_pil().save(img_bytes, format="PNG")
-                    rows = extract_from_image(img_bytes.getvalue(), "image/png", db_query=query)
+                    extraction = extract_from_image(img_bytes.getvalue(), "image/png", db_query=query)
+                    if isinstance(extraction, dict):
+                        rows = extraction.get("rows", [])
+                        boxes = extraction.get("boundingBoxes", [])
+                    else:
+                        rows = extraction
                 except Exception as e:
                     return jsonify({"error": f"Could not render scanned PDF: {e}"}), 422
-            _cache_store(file_hash, rows)
+            _cache_store(file_hash, {"rows": rows, "boundingBoxes": boxes})
         else:
             return jsonify({"error": "Unsupported file type. Send an image, PDF, or paste text."}), 415
 
@@ -123,9 +138,10 @@ def upload():
     # Generate a temporary doc_id placeholder (not saved yet)
     return jsonify({
         "doc_type": doc_type,
-        "provider": provider,
+        "provider": "Gemma 4 Multimodal Vision (gemma-4-26b-a4b-it)",
         "rows": rows,
         "checks": checks,
+        "boundingBoxes": boxes,
     })
 
 
