@@ -27,7 +27,8 @@ COPY . .
 # Copy compiled React app from stage 1
 COPY --from=frontend-builder /app/frontend/dist ./frontend/dist
 
+RUN chmod +x entrypoint.sh
+
 EXPOSE 8080
 
-# Gunicorn — 2 workers is fine for a hackathon demo
-CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:8080", "--workers", "2", "--timeout", "120"]
+CMD ["./entrypoint.sh"]

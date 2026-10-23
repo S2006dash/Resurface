@@ -134,9 +134,31 @@ def seed_demo(conn):
 
 if __name__ == "__main__":
     schema_only = "--schema" in sys.argv
+    force_reset = "--force" in sys.argv
 
     conn = get_connection()
     try:
+        # Check if database already has data to prevent wiping live transactions
+        if not force_reset:
+            try:
+                with conn.cursor() as cur:
+                    cur.execute("""
+                        SELECT EXISTS (
+                            SELECT FROM information_schema.tables 
+                            WHERE table_schema = 'public' AND table_name = 'customers'
+                        );
+                    """)
+                    exists = cur.fetchone()[0]
+                    if exists:
+                        cur.execute("SELECT count(*) FROM customers;")
+                        cnt = cur.fetchone()[0]
+                        if cnt > 0:
+                            print(f"✓ Database already initialized ({cnt} customers). Preserving existing records.")
+                            print("  (Pass --force to drop and re-seed from scratch)")
+                            sys.exit(0)
+            except Exception as e:
+                conn.rollback()
+
         print("Running SecureBank schema …")
         run_sql_file(conn, SECUREBANK_SCHEMA)
 

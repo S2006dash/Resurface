@@ -1,0 +1,35 @@
+name: artha-app
+region: blr
+services:
+- name: web
+  dockerfile_path: Dockerfile
+  github:
+    branch: main
+    deploy_on_push: true
+    repo: S2006dash/Resurface
+  http_port: 8080
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  health_check:
+    http_path: /health
+    initial_delay_seconds: 30
+    period_seconds: 15
+  envs:
+  - key: FLASK_ENV
+    value: production
+  - key: SECRET_KEY
+    type: SECRET
+    scope: RUN_AND_BUILD_TIME
+  - key: GEMINI_API_KEY
+    type: SECRET
+    scope: RUN_AND_BUILD_TIME
+  - key: LLM_PROVIDER
+    value: gemini
+  - key: DATABASE_URL
+    value: ${db.DATABASE_URL}
+databases:
+- engine: PG
+  name: db
+  num_nodes: 1
+  size: db-s-dev-1vcpu-1gb
+  version: "16"
