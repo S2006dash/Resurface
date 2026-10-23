@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artha Companion</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="artha-popup-container">
+    <!-- Header -->
+    <header class="artha-header">
+      <div class="artha-brand">
+        <div class="artha-logo">₹</div>
+        <div>
+          <h1 class="artha-title">Artha</h1>
+          <p class="artha-subtitle">All your money, one clear picture</p>
+        </div>
+      </div>
+      <div class="artha-status" id="connection-status">
+        <span class="status-dot"></span>
+        <span class="status-text">Connecting...</span>
+      </div>
+    </header>
+
+    <!-- Login View (shown if not authenticated) -->
+    <div id="login-section" class="view-section hidden">
+      <div class="login-card">
+        <h3>Sign in to Artha</h3>
+        <p class="text-muted">Access your real-time Safe-to-Spend and financial intelligence.</p>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="login-email" value="priya@demo.artha" placeholder="name@demo.artha">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="login-password" value="demo1234">
+        </div>
+        <button id="btn-login" class="btn btn-primary btn-block">Sign In</button>
+        <div id="login-error" class="error-msg"></div>
+      </div>
+    </div>
+
+    <!-- Main Dashboard View -->
+    <div id="dashboard-section" class="view-section">
+      <!-- Safe to Spend Main Card -->
+      <div class="safe-card">
+        <div class="safe-header">
+          <span class="safe-label">Today's Safe-to-Spend</span>
+          <span class="safe-tag" id="buffer-tag">15% Buffer</span>
+        </div>
+        <div class="safe-amount" id="safe-amount">₹--</div>
+        <div class="safe-subtext" id="safe-subtext">Calculating based on upcoming bills & SIPs...</div>
+      </div>
+
+      <!-- Quick Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Net Worth</div>
+          <div class="stat-val" id="net-worth-val">₹--</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Spend This Month</div>
+          <div class="stat-val text-warning" id="month-spend-val">₹--</div>
+        </div>
+      </div>
+
+      <!-- Urgent Alerts / Bills Banner -->
+      <div id="alert-banner" class="alert-box hidden">
+        <span class="alert-icon">⚠️</span>
+        <span id="alert-text">Health insurance renews soon</span>
+      </div>
+
+      <!-- Quick Receipt Ingest Area -->
+      <div class="quick-ingest-card">
+        <div class="ingest-header">
+          <span>⚡ Quick Gemma 4 Ingest</span>
+          <span class="badge-mini">OCR</span>
+        </div>
+        <input type="text" id="quick-sms-input" placeholder="Paste SMS or UPI text (e.g. Debited ₹450 Swiggy)...">
+        <button id="btn-quick-ingest" class="btn btn-secondary btn-sm">Process with Gemma 4</button>
+        <div id="quick-ingest-result" class="ingest-result hidden"></div>
+      </div>
+
+      <!-- Actions Footer -->
+      <div class="footer-actions">
+        <button id="btn-open-sidepanel" class="btn btn-emerald btn-block">
+          Open Full Side Panel ➔
+        </button>
+        <div class="footer-links">
+          <a href="http://localhost:5000/artha" target="_blank">Open Web Dashboard</a>
+          <span>·</span>
+          <a href="#" id="btn-logout">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../shared/jargon.js"></script>
+  <script src="../shared/api.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

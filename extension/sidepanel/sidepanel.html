@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artha Companion Panel</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <div class="sidepanel-root">
+    <!-- Header -->
+    <header class="sp-header">
+      <div class="sp-brand">
+        <div class="sp-logo">₹</div>
+        <div>
+          <h1 class="sp-title">Artha Companion</h1>
+          <p class="sp-subtitle">Private Financial Intelligence</p>
+        </div>
+      </div>
+      <div class="sp-header-right">
+        <span class="user-pill" id="user-display">priya@demo.artha</span>
+        <button id="btn-refresh" class="icon-btn" title="Refresh data">🔄</button>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="sp-nav">
+      <button class="sp-nav-btn active" data-tab="tab-overview">Overview</button>
+      <button class="sp-nav-btn" data-tab="tab-ingest">Clip & Ingest</button>
+      <button class="sp-nav-btn" data-tab="tab-alerts">Alerts & Bills</button>
+      <button class="sp-nav-btn" data-tab="tab-coach">AI Coach</button>
+      <button class="sp-nav-btn" data-tab="tab-jargon">Jargon Buster</button>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="sp-content">
+      <!-- ── Tab 1: Overview & Safe-to-Spend ── -->
+      <section id="tab-overview" class="sp-tab-pane active">
+        <!-- Safe-to-Spend Hero -->
+        <div class="hero-card">
+          <div class="hero-top">
+            <span class="hero-label">Safe-to-Spend Balance</span>
+            <span class="pill-badge" id="s2s-buffer-badge">15% Safety Buffer</span>
+          </div>
+          <div class="hero-amount" id="s2s-amount">₹--</div>
+          <p class="hero-desc" id="s2s-desc">Loading spending intelligence...</p>
+          
+          <div class="buffer-slider-wrap">
+            <label class="slider-label">
+              <span>Safety Cushion Buffer:</span>
+              <span id="slider-buffer-val">15%</span>
+            </label>
+            <input type="range" id="buffer-slider" min="5" max="30" value="15" step="5">
+          </div>
+        </div>
+
+        <!-- Net Worth & Cash Flow Summary -->
+        <div class="metric-grid">
+          <div class="metric-card">
+            <span class="metric-title">Net Worth</span>
+            <span class="metric-num" id="nw-amount">₹--</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-title">Monthly Income</span>
+            <span class="metric-num text-success" id="income-amount">₹--</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-title">Monthly Expenses</span>
+            <span class="metric-num text-danger" id="expense-amount">₹--</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-title">Savings Rate</span>
+            <span class="metric-num text-mint" id="savings-rate">--%</span>
+          </div>
+        </div>
+
+        <!-- Financial Resilience Pillars -->
+        <div class="card">
+          <div class="card-header">
+            <h3>🛡️ Financial Resilience</h3>
+            <span class="badge-subtle" id="resilience-grade">Strong</span>
+          </div>
+          <div class="resilience-bars">
+            <div class="r-row">
+              <span class="r-name">Runway (Emergency Fund)</span>
+              <span class="r-val" id="r-runway">3.2 months</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" id="fill-runway" style="width: 70%;"></div></div>
+
+            <div class="r-row" style="margin-top: 8px;">
+              <span class="r-name">Obligations Coverage</span>
+              <span class="r-val" id="r-coverage">92%</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" id="fill-coverage" style="width: 92%;"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Tab 2: Clip & Ingest (Gemma 4 Multimodal) ── -->
+      <section id="tab-ingest" class="sp-tab-pane">
+        <div class="card">
+          <div class="card-header">
+            <h3>📥 Gemma 4 Receipt Ingestion</h3>
+            <span class="badge-mini">OCR + Extraction</span>
+          </div>
+          <p class="text-sm text-muted">Upload any UPI screenshot, bank PDF statement, or paste SMS transaction alerts.</p>
+          
+          <!-- Dropzone -->
+          <div class="dropzone" id="file-dropzone">
+            <div class="dropzone-icon">📁</div>
+            <p><strong>Click to browse</strong> or drag & drop</p>
+            <span class="text-xs text-muted">PNG, JPG, or Bank Statement PDF</span>
+            <input type="file" id="file-input" accept="image/*,.pdf" style="display:none;">
+          </div>
+
+          <!-- Text Paste Area -->
+          <div style="margin-top: 14px;">
+            <label class="text-xs text-muted">Or Paste SMS / Transaction Alert:</label>
+            <textarea id="text-ingest-input" rows="3" class="sp-textarea" placeholder="e.g. Sent Rs.420.00 to Swiggy UPI via HDFC Bank on 20-Oct-2026 Ref 429381..."></textarea>
+            <button id="btn-parse-text" class="btn btn-primary btn-block" style="margin-top: 6px;">
+              Read with Gemma 4 OCR
+            </button>
+          </div>
+        </div>
+
+        <!-- Proposed Rows Result Container -->
+        <div id="ingest-review-container" class="card hidden" style="margin-top: 14px;">
+          <div class="card-header">
+            <h3>Proposed Ledger Entries</h3>
+            <span class="badge-mini" id="extracted-count">0 items</span>
+          </div>
+          <p class="text-xs text-muted">Gemma 4 extracted these rows. Review and confirm to save into your ledger.</p>
+          <div id="proposed-rows-list" class="rows-list"></div>
+          <button id="btn-confirm-ledger" class="btn btn-emerald btn-block" style="margin-top: 10px;">
+            ✓ Confirm & Save to Ledger
+          </button>
+        </div>
+      </section>
+
+      <!-- ── Tab 3: Alerts & Bills Due ── -->
+      <section id="tab-alerts" class="sp-tab-pane">
+        <!-- Upcoming Bills -->
+        <div class="card">
+          <div class="card-header">
+            <h3>📅 Upcoming Bills & Obligations</h3>
+          </div>
+          <div id="bills-list" class="items-list">
+            <p class="text-xs text-muted">Loading bills...</p>
+          </div>
+        </div>
+
+        <!-- Anomaly Finder -->
+        <div class="card" style="margin-top: 14px;">
+          <div class="card-header">
+            <h3>⚡ Detected Anomalies & Spikes</h3>
+            <span class="badge-subtle" id="anomaly-badge">Z-Score AI</span>
+          </div>
+          <div id="anomalies-list" class="items-list">
+            <p class="text-xs text-muted">Checking spending patterns...</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Tab 4: AI Coach ── -->
+      <section id="tab-coach" class="sp-tab-pane">
+        <div class="card">
+          <div class="card-header">
+            <h3>💬 Artha Financial Coach</h3>
+            <select id="coach-lang" class="select-sm">
+              <option value="english">English</option>
+              <option value="tamil">தமிழ் (Tamil)</option>
+              <option value="hindi">हिंदी (Hindi)</option>
+            </select>
+          </div>
+          <p class="text-xs text-muted">Ask questions about your budget, safe-to-spend, or financial choices.</p>
+
+          <div class="quick-prompts">
+            <button class="prompt-chip" data-q="Can I afford dining out tonight?">Can I afford dinner tonight?</button>
+            <button class="prompt-chip" data-q="Explain my safe-to-spend calculation">Explain Safe-to-Spend</button>
+            <button class="prompt-chip" data-q="What subscriptions can I cancel?">Review subscriptions</button>
+          </div>
+
+          <div class="coach-chat-box" id="coach-chat-history">
+            <div class="chat-msg coach">
+              👋 Hi! I'm your private Artha coach. How can I help your financial decisions today?
+            </div>
+          </div>
+
+          <div class="chat-input-row">
+            <input type="text" id="coach-input" placeholder="Ask a financial question..." class="sp-input">
+            <button id="btn-coach-send" class="btn btn-primary">Ask</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Tab 5: Jargon Buster ── -->
+      <section id="tab-jargon" class="sp-tab-pane">
+        <div class="card">
+          <div class="card-header">
+            <h3>📖 Financial Jargon Buster</h3>
+            <div class="lang-pills">
+              <button class="lp-btn active" data-jlang="en">EN</button>
+              <button class="lp-btn" data-jlang="hi">हिंदी</button>
+              <button class="lp-btn" data-jlang="ta">தமிழ்</button>
+              <button class="lp-btn" data-jlang="te">తెలుగు</button>
+            </div>
+          </div>
+          
+          <div class="search-box">
+            <input type="text" id="jargon-search" placeholder="Search: APR, EMI, NACH, Safe-to-Spend..." class="sp-input">
+          </div>
+
+          <div id="jargon-results" class="jargon-list"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../shared/jargon.js"></script>
+  <script src="../shared/api.js"></script>
+  <script src="sidepanel.js"></script>
+</body>
+</html>

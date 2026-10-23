@@ -16,12 +16,14 @@ shows every rupee in one place, and helps you reach goals — privately, on open
 | Fragmented data across platforms | Upload a screenshot, PDF, or SMS — Gemma 4 reads it | Five files become one ledger |
 | No unified insights | Net worth, cash flow, findings with proof rows | Tap any number → see the exact rows |
 | Hard to plan goals | Monte Carlo goal simulator with what-if slider | "Cut food delivery → odds jump 15%" |
+| Impulse spending on e-commerce | Chrome Extension Safe-to-Spend Guardian | Real-time budget check on Amazon/Swiggy checkout |
 
 ## Tech stack
 
 - **Backend:** Python · Flask · PostgreSQL · pandas · gunicorn
 - **AI:** Gemma 4 via Gemini API (cloud) or Ollama (local / private mode)
 - **Frontend:** React 18 · Vite · Recharts
+- **Browser Extension:** Chrome Manifest V3 · Side Panel API · Content Scripts
 - **Deployment:** DigitalOcean App Platform · Managed PostgreSQL
 - **Licence:** Apache-2.0
 
@@ -58,6 +60,16 @@ npm install
 npm run dev             # http://localhost:5173
 ```
 
+## Chrome Extension (Companion)
+
+Load Artha directly into Google Chrome as a companion:
+- **Safe-to-Spend Guardian**: Real-time checkout checks on Amazon, Flipkart, Swiggy, and Zomato.
+- **1-Click Receipt Clipper**: Right-click to extract transaction receipts from web pages using Gemma 4.
+- **In-Page Multilingual Jargon Buster**: Highlight any financial term on any site to view simplified analogies in English, Hindi, Tamil, and Telugu.
+- **Side Panel Mini-App**: Persistent financial cockpit (Safe-to-Spend slider, upcoming bills, AI coach).
+
+See [`extension/README.md`](extension/README.md) for instructions to load the unpacked extension into Chrome.
+
 ## Private mode (offline)
 
 Set `LLM_PROVIDER=ollama` in `.env` and run:
@@ -71,7 +83,7 @@ Your files never leave your laptop.
 
 ```
 artha/
-├── app.py                 # Flask app factory
+├── app.py                 # Flask app factory (with extension CORS support)
 ├── db.py                  # DB connection helper
 ├── auth_utils.py          # Login decorator
 ├── ai_utils.py            # z-score anomaly + balance forecast
@@ -79,6 +91,13 @@ artha/
 ├── engine/                # Money engine: net worth, finders, goals  (Role B)
 ├── mcp/                   # Read-only MCP plug (4 tools)  (P2)
 ├── frontend/src/          # React SPA  (Role C)
+├── extension/             # Chrome Extension (Manifest V3 Side Panel & Shopping Guardian)
+│   ├── manifest.json
+│   ├── background/        # Service worker & context menus
+│   ├── content/           # In-page Safe-to-Spend Guardian & Jargon Buster
+│   ├── popup/             # Action popup mini-view
+│   ├── sidepanel/         # Full Artha companion panel
+│   └── shared/            # Jargon dictionary & API client
 ├── routes/                # SecureBank routes (auth, dashboard, transfer, history, profile)
 ├── database_schema.sql    # SecureBank tables (has DROP TABLE — don't re-run on live data)
 ├── artha_schema.sql       # Artha tables (CREATE IF NOT EXISTS — safe to re-run)

@@ -4,6 +4,7 @@ Built on a fresh Flask + React + PostgreSQL base.
 """
 
 import os
+import re
 from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -29,8 +30,12 @@ def create_app():
 
     # ── CORS ─────────────────────────────────────────────────────────────────
     # In production we serve React from Flask (same origin) so CORS is only
-    # needed for local dev (Vite runs on :5173).
-    dev_origins = ["http://localhost:5173", "http://127.0.0.1:5173"]
+    # needed for local dev (Vite runs on :5173) and Chrome extension origins.
+    dev_origins = [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        re.compile(r"^chrome-extension://.*$"),
+    ]
     CORS(app, supports_credentials=True, origins=dev_origins)
 
     # ── SecureBank blueprints ─────────────────────────────────────────────────

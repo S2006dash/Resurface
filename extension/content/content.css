@@ -1,0 +1,312 @@
+/* Artha Content Script Styles */
+
+:root {
+  --artha-emerald-dark: #062615;
+  --artha-emerald-mid: #0d4f2e;
+  --artha-emerald-light: #166534;
+  --artha-mint: #7dffb3;
+  --artha-mint-soft: #dcfce7;
+  --artha-gold: #facc15;
+  --artha-danger: #ef4444;
+  --artha-surface: #0f172a;
+  --artha-text: #f8fafc;
+  --artha-text-muted: #94a3b8;
+  --artha-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+  --artha-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* ── Floating Notification Toast ─────────────────────────────────────────── */
+.artha-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 2147483647;
+  background: var(--artha-emerald-dark);
+  color: var(--artha-text);
+  border: 1.5px solid var(--artha-mint);
+  border-radius: 12px;
+  padding: 12px 18px;
+  box-shadow: var(--artha-shadow);
+  font-family: var(--artha-font);
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.artha-toast.artha-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.artha-toast-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(125, 255, 179, 0.3);
+  border-top-color: var(--artha-mint);
+  border-radius: 50%;
+  animation: artha-spin 0.8s linear infinite;
+}
+
+@keyframes artha-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Safe-to-Spend Shopping Guardian Pill ─────────────────────────────────── */
+.artha-guardian-pill {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 2147483640;
+  background: var(--artha-emerald-dark);
+  color: var(--artha-text);
+  border: 1.5px solid rgba(125, 255, 179, 0.3);
+  border-radius: 16px;
+  box-shadow: var(--artha-shadow);
+  font-family: var(--artha-font);
+  transition: all 0.25s ease;
+  overflow: hidden;
+  max-width: 380px;
+}
+
+.artha-guardian-pill:hover {
+  border-color: var(--artha-mint);
+}
+
+.artha-guardian-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: rgba(13, 79, 46, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  gap: 8px;
+}
+
+.artha-guardian-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--artha-mint);
+}
+
+.artha-guardian-logo-badge {
+  width: 22px;
+  height: 22px;
+  background: var(--artha-mint);
+  color: var(--artha-emerald-dark);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 12px;
+}
+
+.artha-guardian-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.artha-icon-btn {
+  background: transparent;
+  border: none;
+  color: var(--artha-text-muted);
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.artha-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--artha-text);
+}
+
+.artha-guardian-body {
+  padding: 14px 16px;
+}
+
+.artha-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.artha-stat-label {
+  font-size: 12px;
+  color: var(--artha-text-muted);
+}
+
+.artha-stat-val {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--artha-mint);
+}
+
+.artha-impact-card {
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.45;
+  border: 1px solid transparent;
+}
+
+.artha-impact-safe {
+  background: rgba(22, 163, 74, 0.15);
+  border-color: rgba(22, 163, 74, 0.4);
+  color: #86efac;
+}
+
+.artha-impact-warning {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+}
+
+.artha-guardian-footer {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.artha-btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--artha-text);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.artha-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Collapsed Mini Pill */
+.artha-guardian-collapsed {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+/* ── In-Page Jargon Buster Tooltip ───────────────────────────────────────── */
+.artha-jargon-bubble {
+  position: absolute;
+  z-index: 2147483647;
+  background: #ffffff;
+  color: #0f172a;
+  border: 1.5px solid #0d4f2e;
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+  font-family: var(--artha-font);
+  width: 320px;
+  max-width: 90vw;
+  box-sizing: border-box;
+  animation: artha-pop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes artha-pop {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.artha-jargon-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.artha-jargon-badge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #0d4f2e;
+  background: #dcfce7;
+  padding: 2px 7px;
+  border-radius: 5px;
+}
+
+.artha-jargon-term {
+  font-size: 16px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 4px 0 8px;
+}
+
+.artha-lang-toggle {
+  display: flex;
+  gap: 4px;
+  background: #f1f5f9;
+  padding: 3px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.artha-lang-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 3px 0;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 4px;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.artha-lang-btn.active {
+  background: #0d4f2e;
+  color: #ffffff;
+}
+
+.artha-jargon-def {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #334155;
+  margin-bottom: 10px;
+}
+
+.artha-jargon-example {
+  background: #f0fdf4;
+  border-left: 3px solid #16a34a;
+  padding: 8px 10px;
+  border-radius: 0 6px 6px 0;
+  font-size: 12px;
+  color: #166534;
+  line-height: 1.45;
+  margin-bottom: 12px;
+}
+
+.artha-jargon-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 8px;
+}
